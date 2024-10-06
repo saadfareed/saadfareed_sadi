@@ -1,26 +1,18 @@
 module.exports = {
-  email: 'saadhaxxan@ieee.org',
+  email: 'saadfareedsadi@gmail.com',
 
   socialMedia: [
     {
       name: 'GitHub',
-      url: 'https://github.com/saadhaxxan',
+      url: 'https://github.com/saadfareed',
     },
     {
       name: 'Instagram',
-      url: 'https://www.instagram.com/saadhaxxan',
-    },
-    {
-      name: 'Twitter',
-      url: 'https://twitter.com/HaxxanSaad',
+      url: 'https://www.instagram.com/saadfareed_sadi',
     },
     {
       name: 'Linkedin',
-      url: 'https://www.linkedin.com/in/saad-haxxan',
-    },
-    {
-      name: 'Codepen',
-      url: 'https://codepen.io/saadhaxxan',
+      url: 'https://www.linkedin.com/in/saad-fareed',
     },
   ],
 

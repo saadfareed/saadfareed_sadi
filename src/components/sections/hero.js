@@ -52,13 +52,14 @@ const Hero = () => {
   const three = <h3 className="big-heading">I am a Business Problem Solver & Software Engineer.</h3>;
   const four = (
     <p>
-      A Passionate Technology Enthusiast Driving Innovation and Tailored Solutions, Merging Expertise in Python, Django, FastAPI, LLM Models, React, Vue, Nuxt, TypeScript, AWS, Docker, NLP, and Data Analytics. 
-      Proudly recognized as one of the Top 50 Python Developers in Pakistan and among the Top 2% worldwide.
+      A Passionate Technology Enthusiast with Over 3 Years of Experience Driving Innovation and Delivering Tailored Solutions. 
+      Expertly Merging Skills in Python, Django, FastAPI, LLM Models, React, Vue, Nuxt, TypeScript, AWS, Docker, NLP, and Data Analytics. 
+      Proudly Recognized as One of the Top 50 Python Developers in Pakistan and Among the Top 2% Worldwide. Let’s Transform Ideas into Reality Together!
     </p>
   );
   const five = (
-    <a href={`mailto:${email}`} className="email-link">
-      Get In Touch
+    <a href="https://www.upwork.com/freelancers/~013a7b947b3c849afd" className="email-link">
+      Hire Me
     </a>
   );
 
