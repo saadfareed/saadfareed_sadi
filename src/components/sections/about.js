@@ -155,7 +155,7 @@ const About = () => {
 
             <p>
               I'm Graduate of{' '}
-              <a href="https://uet.edu.pk">University Of Engineering and Technology</a>, I have worked in
+              <a href="https://uet.edu.pk">University Of Engineering and Technology,</a> I have worked in
               engineering, development and research teams at <a href="https://www.linkedin.com/in/saad-haxxan/">Various Companies</a> where I work
               on a wide variety of interesting and meaningful projects on a daily basis.
             </p>
