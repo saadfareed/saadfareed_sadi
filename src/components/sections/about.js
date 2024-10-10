@@ -132,24 +132,30 @@ const About = () => {
     sr.reveal(revealContainer.current, srConfig());
   }, []);
 
-  const skills = ['JavaScript (ES6+)', 'Django', 'React', 'Python', 'Node.js', 'Express', 'Tensorflow', 'Pytorch','DevOps', 'Kotlin', 'Rust', 'Android'];
+  const skills = ['JavaScript (ES6+)', 'Python', 'Django', 'Vue', 'NUXT', 'Vuetify', 'React', 'Redux', 'GraphQL', 'Node.js', 'Express Js', 'Docker', 'NLP', 'Data Analytics', 'FastAPI', 'LLM Models' ];
 
   return (
     <StyledAboutSection id="about" ref={revealContainer}>
       <h2 className="numbered-heading">About Me</h2>
 
-      <div className="inner">
+      <div className="inner" style={{textAlign:'justify'}}>
         <StyledText>
           <div>
-            <p>Hello! I'm Saad, a full stack software developer based in Lahore, PK.</p>
+            <p>Hello! I'm Saad Fareed, a full stack software developer based in Lahore, PK.</p>
 
             <p>
-              I build things on the internet and love building large scale applications with system design in mind. I create large scale deep neural networks to teach machines how to learn. I also develop CI/CD pipelines to automate all the processes of the workflow. i have worked in teams and also individually as a freelancer and got valuable learning experiences.
+              I build things on the internet and love building large scale applications with system design in mind. 
+              I transform my life through technology by creating some of the most widely used applications myself.
+              I Provide innovative business solutions tailored for enterprises and startups of every scale.
+              I not only Build some of the exceptional applications but offer valuable insights to elevate business.
+              I love to delve deeply into technology, exploring every aspect to enhance my skills and understanding.
+              My personal favorite projects are those driven by research and development.
+              I have worked in teams and also individually as a freelancer and got valuable learning experiences.
             </p>
 
             <p>
-              I m still studying in my undergraduate degree at{' '}
-              <a href="https://uol.edu.pk">University Of Lahore</a>, I have worked in
+              I'm Graduate of{' '}
+              <a href="https://uet.edu.pk">University Of Engineering and Technology,</a> I have worked in
               engineering, development and research teams at <a href="https://www.linkedin.com/in/saad-haxxan/">Various Companies</a> where I work
               on a wide variety of interesting and meaningful projects on a daily basis.
             </p>

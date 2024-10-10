@@ -5,7 +5,7 @@ import sr from '@utils/sr';
 
 const StyledContactSection = styled.section`
   max-width: 600px;
-  margin: 0 auto 100px;
+  margin: 0 auto 50px;
   text-align: center;
 
   @media (max-width: 768px) {
@@ -33,6 +33,16 @@ const StyledContactSection = styled.section`
   .title {
     font-size: clamp(40px, 5vw, 60px);
   }
+  
+  .info {
+    text-align: justify;
+  }
+  
+  .hire-me {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
 
   .email-link {
     ${({ theme }) => theme.mixins.bigButton};
@@ -46,18 +56,25 @@ const Contact = () => {
 
   return (
     <StyledContactSection id="contact" ref={revealContainer}>
-      <h2 className="numbered-heading overline">What’s Next?</h2>
+      <h2 className="numbered-heading overline">Looking for Expertise?</h2>
 
-      <h2 className="title">Get In Touch</h2>
+      <h2 className="title">Hire Me</h2>
 
-      <p>
-        Although I'm not currently looking for any new opportunities, my inbox is always open.
-        Whether you have a question or just want to say hi, I'll try my best to get back to you!
-      </p>
+      <p className='info'> If you’re searching for a versatile software engineer who delivers 
+        innovative and impactful solutions, you’ve come to the right place! 
+        With years of experience in tackling complex problems with cutting-edge 
+        technologies, I'm here to help your project succeed. 
+        Whether it's a startup idea or a challenging software problem, 
+        I’m ready to bring your vision to life. </p>
 
-      <a className="email-link" href={`mailto:${email}`}>
-        Say Hello
-      </a>
+      <div className='hire-me'>
+        <a className="email-link" href={`mailto:${email}`}>
+          Let's Chat
+        </a>
+        <a href="https://www.upwork.com/freelancers/~013a7b947b3c849afd" className="email-link">
+          Hire Me
+        </a>
+      </div>
     </StyledContactSection>
   );
 };
