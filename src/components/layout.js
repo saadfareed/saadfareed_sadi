@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { Head, Loader, Nav, Social, Email, Footer } from '@components';
+import { ThemeProvider as ColorThemeProvider } from '@context/ThemeContext';
 import { GlobalStyle, theme } from '@styles';
+import sr from '@utils/sr';
 
 // https://medium.com/@chrisfitkin/how-to-smooth-scroll-links-in-gatsby-3dc445299558
 if (typeof window !== 'undefined') {
@@ -40,6 +42,8 @@ const SkipToContentLink = styled.a`
   }
 `;
 const StyledContent = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -53,8 +57,13 @@ const Layout = ({ children, location }) => {
     if (isLoading) {
       return;
     }
+
+    if (sr) {
+      sr.sync();
+    }
+
     if (location.hash) {
-      const id = location.hash.substring(1); // location.hash without the '#'
+      const id = location.hash.substring(1);
       setTimeout(() => {
         const el = document.getElementById(id);
         if (el) {
@@ -63,7 +72,7 @@ const Layout = ({ children, location }) => {
         }
       }, 0);
     }
-  }, [isLoading]);
+  }, [isLoading, location.hash]);
 
   // Sets target="_blank" rel="noopener noreferrer" on external links
   const handleExternalLinks = () => {
@@ -87,26 +96,28 @@ const Layout = ({ children, location }) => {
       <Head />
 
       <div id="root">
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
+        <ColorThemeProvider>
+          <StyledThemeProvider theme={theme}>
+            <GlobalStyle />
 
-          <SkipToContentLink href="#content">Skip to Content</SkipToContentLink>
+            <SkipToContentLink href="#content">Skip to Content</SkipToContentLink>
 
-          {isLoading && isHome ? (
-            <Loader finishLoading={() => setIsLoading(false)} />
-          ) : (
-            <StyledContent>
-              <Nav isHome={isHome} />
-              <Social isHome={isHome} />
-              <Email isHome={isHome} />
+            {isLoading && isHome ? (
+              <Loader finishLoading={() => setIsLoading(false)} />
+            ) : (
+              <StyledContent>
+                <Nav isHome={isHome} />
+                <Social isHome={isHome} />
+                <Email isHome={isHome} />
 
-              <div id="content">
-                {children}
-                <Footer />
-              </div>
-            </StyledContent>
-          )}
-        </ThemeProvider>
+                <div id="content">
+                  {children}
+                  <Footer />
+                </div>
+              </StyledContent>
+            )}
+          </StyledThemeProvider>
+        </ColorThemeProvider>
       </div>
     </>
   );

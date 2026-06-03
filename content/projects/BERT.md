@@ -8,7 +8,7 @@ tech:
   - Tranformers
   - BERT
 company: 'Individual'
-showInProjects: true
+showInProjects: false
 ---
 
 Predicting the sentiment of People talk usinh SOTA BERT model.

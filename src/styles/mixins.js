@@ -1,9 +1,23 @@
 import { css } from 'styled-components';
 
+const lightButtonHover = css`
+  [data-theme='light'] & {
+    border-color: #0a192f;
+    color: #0a192f;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: #0a192f;
+      color: #ffffff;
+    }
+  }
+`;
+
 const button = css`
-  color: var(--green);
+  color: var(--accent);
   background-color: transparent;
-  border: 1px solid var(--green);
+  border: 1px solid var(--accent);
   border-radius: var(--border-radius);
   font-size: var(--fz-xs);
   font-family: var(--font-mono);
@@ -16,12 +30,14 @@ const button = css`
   &:hover,
   &:focus,
   &:active {
-    background-color: var(--green-tint);
+    background-color: var(--secondary-soft);
     outline: none;
   }
   &:after {
     display: none !important;
   }
+
+  ${lightButtonHover};
 `;
 
 const mixins = {
@@ -48,8 +64,14 @@ const mixins = {
     &:hover,
     &:active,
     &:focus {
-      color: var(--green);
+      color: var(--accent);
       outline: 0;
+    }
+
+    [data-theme='light'] &:hover,
+    [data-theme='light'] &:active,
+    [data-theme='light'] &:focus {
+      color: #0a192f;
     }
   `,
 
@@ -60,17 +82,17 @@ const mixins = {
     position: relative;
     transition: var(--transition);
     cursor: pointer;
-    color: var(--green);
+    color: var(--accent);
     &:hover,
     &:focus,
     &:active {
-      color: var(--green);
+      color: var(--accent);
       outline: 0;
       &:after {
         width: 100%;
       }
       & > * {
-        color: var(--green) !important;
+        color: var(--secondary) !important;
         transition: var(--transition);
       }
     }
@@ -81,18 +103,26 @@ const mixins = {
       height: 1px;
       position: relative;
       bottom: 0.37em;
-      background-color: var(--green);
+      background-color: var(--accent);
       transition: var(--transition);
       opacity: 0.5;
+    }
+
+    [data-theme='light'] & {
+      color: #0a192f;
+
+      &:after {
+        background-color: #0a192f;
+      }
     }
   `,
 
   button,
 
   smallButton: css`
-    color: var(--green);
+    color: var(--accent);
     background-color: transparent;
-    border: 1px solid var(--green);
+    border: 1px solid var(--brand);
     border-radius: var(--border-radius);
     padding: 0.75rem 1rem;
     font-size: var(--fz-xs);
@@ -104,17 +134,19 @@ const mixins = {
     &:hover,
     &:focus,
     &:active {
-      background-color: var(--green-tint);
+      background-color: var(--secondary-soft);
     }
     &:after {
       display: none !important;
     }
+
+    ${lightButtonHover};
   `,
 
   bigButton: css`
-    color: var(--green);
+    color: var(--accent);
     background-color: transparent;
-    border: 1px solid var(--green);
+    border: 1px solid var(--brand);
     border-radius: var(--border-radius);
     padding: 1.25rem 1.75rem;
     font-size: var(--fz-sm);
@@ -126,20 +158,46 @@ const mixins = {
     &:hover,
     &:focus,
     &:active {
-      background-color: var(--green-tint);
+      background-color: var(--secondary-soft);
     }
     &:after {
       display: none !important;
     }
+
+    ${lightButtonHover};
+  `,
+
+  fillButton: css`
+    display: inline-block;
+    padding: 10px 16px;
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: #64ffda;
+    color: #0a192f;
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--transition);
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: #64ffda;
+      color: #0a192f;
+      filter: brightness(0.92);
+      outline: 0;
+    }
   `,
 
   boxShadow: css`
-    box-shadow: 0 10px 30px -15px var(--navy-shadow);
+    box-shadow: 0 10px 30px -15px var(--shadow);
     transition: var(--transition);
 
     &:hover,
     &:focus {
-      box-shadow: 0 20px 30px -15px var(--navy-shadow);
+      box-shadow: 0 20px 30px -15px var(--shadow);
     }
   `,
 
@@ -156,7 +214,7 @@ const mixins = {
         content: '▹';
         position: absolute;
         left: 0;
-        color: var(--green);
+        color: var(--accent);
       }
     }
   `,

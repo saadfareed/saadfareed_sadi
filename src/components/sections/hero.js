@@ -1,41 +1,125 @@
 import React, { useState, useEffect } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
-import { email } from '@config';
+import { email, resume, heroKeywords } from '@config';
 import { navDelay, loaderDelay } from '@utils';
 
 const StyledHeroSection = styled.section`
-  ${({ theme }) => theme.mixins.flexCenter};
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   min-height: 100vh;
+  width: 100%;
+  max-width: var(--content-max-width);
+  padding-top: var(--nav-height);
 
-  h1 {
-    margin: 0 0 30px 4px;
-    color: var(--green);
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    color: var(--secondary);
     font-family: var(--font-mono);
-    font-size: clamp(var(--fz-sm), 5vw, var(--fz-md));
-    font-weight: 400;
+    font-size: var(--fz-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 
-    @media (max-width: 480px) {
-      margin: 0 0 20px 2px;
+    span.dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--brand);
+      box-shadow: 0 0 12px color-mix(in srgb, var(--brand) 60%, transparent);
     }
   }
 
-  h3 {
-    margin-top: 10px;
-    color: var(--slate);
-    line-height: 0.9;
+  h1.big-heading {
+    margin: 0;
+    line-height: 1.05;
+
+    .accent {
+      color: var(--secondary);
+    }
   }
 
-  p {
-    margin: 20px 0 0;
-    max-width: 500px;
+  .bio {
+    max-width: 640px;
+    margin: 28px 0 0;
+    color: var(--text);
+    font-size: var(--fz-lg);
+    line-height: var(--text-line-height);
+
+    strong {
+      color: var(--heading);
+      font-weight: 600;
+    }
   }
 
-  .email-link {
+  .keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .keyword {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--heading);
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .primary-link {
     ${({ theme }) => theme.mixins.bigButton};
-    margin-top: 50px;
+    margin: 0;
+  }
+
+  .secondary-link {
+    ${({ theme }) => theme.mixins.smallButton};
+    margin: 0;
+    padding: 16px 28px;
+    font-size: var(--fz-sm);
+  }
+
+  .resume-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 8px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: var(--fz-sm);
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover,
+    &:focus {
+      color: var(--secondary);
+    }
+  }
+`;
+
+const HeroItem = styled.div`
+  transition-delay: ${({ $delay }) => $delay};
+
+  &.fadeup-enter,
+  &.fadeup-enter-active {
+    transition-delay: ${({ $delay }) => $delay};
   }
 `;
 
@@ -47,23 +131,66 @@ const Hero = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const one = <h1>Hi, my name is</h1>;
-  const two = <h2 className="big-heading">Saad Fareed</h2>;
-  const three = <h3 className="big-heading">I am a Business Problem Solver & Software Engineer.</h3>;
-  const four = (
-    <p>
-      A Passionate Technology Enthusiast with Over 3 Years of Experience Driving Innovation and Delivering Tailored Solutions. 
-      Expertly Merging Skills in Python, Django, FastAPI, LLM Models, React, Vue, Nuxt, TypeScript, AWS, Docker, NLP, and Data Analytics. 
-      Proudly Recognized as One of the Top 50 Python Developers in Pakistan and Among the Top 2% Worldwide. Let’s Transform Ideas into Reality Together!
-    </p>
-  );
-  const five = (
-    <a href="https://www.upwork.com/freelancers/~013a7b947b3c849afd" className="email-link">
-      Hire Me
-    </a>
-  );
-
-  const items = [one, two, three, four, five];
+  const items = [
+    {
+      content: (
+        <p className="status">
+          <span className="dot" aria-hidden="true" />
+          Available for opportunities
+        </p>
+      ),
+    },
+    {
+      content: (
+        <h1 className="big-heading">
+          Backend <span className="accent">Developer.</span>
+          <br />
+          Full-Stack Ready.
+        </h1>
+      ),
+    },
+    {
+      content: (
+        <p className="bio">
+          Hi, I&apos;m <strong>Saad Fareed</strong> — I architect{' '}
+          <strong>microservices</strong>, ship <strong>full-stack apps</strong>, and build{' '}
+          <strong>products people actually use</strong>. From startups to scale-ups, I deliver
+          systems built to <strong>last and scale</strong>.
+        </p>
+      ),
+    },
+    {
+      content: (
+        <div className="keywords">
+          {heroKeywords.map(keyword => (
+            <span key={keyword} className="keyword">
+              {keyword}
+            </span>
+          ))}
+        </div>
+      ),
+    },
+    {
+      content: (
+        <div className="hero-actions">
+          <a href="/#projects" className="primary-link">
+            View Projects →
+          </a>
+          <a href={`mailto:${email}`} className="secondary-link">
+            Hire Me
+          </a>
+          <a href={resume} className="resume-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Resume
+          </a>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <StyledHeroSection>
@@ -71,7 +198,7 @@ const Hero = () => {
         {isMounted &&
           items.map((item, i) => (
             <CSSTransition key={i} classNames="fadeup" timeout={loaderDelay}>
-              <div style={{ transitionDelay: `${i + 1}00ms`, textAlign: i === 3 ? 'justify' : 'initial'}}>{item}</div>
+              <HeroItem $delay={`${(i + 1) * 100}ms`}>{item.content}</HeroItem>
             </CSSTransition>
           ))}
       </TransitionGroup>

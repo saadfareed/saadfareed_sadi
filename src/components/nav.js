@@ -5,8 +5,9 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled, { css } from 'styled-components';
 import { navLinks } from '@config';
 import { loaderDelay } from '@utils';
-import { useScrollDirection } from '@hooks';
+import { useScrollIdle } from '@hooks';
 import { Menu } from '@components';
+import ThemeToggle from '@components/ThemeToggle';
 import { IconLogo } from '@components/icons';
 
 const StyledHeader = styled.header`
@@ -14,28 +15,32 @@ const StyledHeader = styled.header`
   position: fixed;
   top: 0;
   z-index: 11;
-  padding: 0px 50px;
+  padding: 0 var(--page-gutter);
   width: 100%;
   height: var(--nav-height);
-  background-color: var(--navy);
+  background-color: var(--nav-bg);
   filter: none !important;
   pointer-events: auto !important;
   user-select: auto !important;
   backdrop-filter: blur(10px);
   transition: var(--transition);
 
+  @media (min-width: 769px) {
+    padding-left: calc(var(--page-gutter) + var(--side-rail-space));
+    padding-right: calc(var(--page-gutter) + var(--side-rail-space));
+  }
+
   ${props =>
-    props.scrollDirection === 'up' &&
-    !props.scrolledToTop &&
+    props.$visible &&
     css`
       height: var(--nav-scroll-height);
       transform: translateY(0px);
-      background-color: rgba(10, 25, 47, 0.85);
+      background-color: var(--nav-bg-scrolled);
       box-shadow: 0 10px 30px -10px var(--navy-shadow);
     `};
 
   ${props =>
-    props.scrollDirection === 'down' &&
+    !props.$visible &&
     !props.scrolledToTop &&
     css`
       height: var(--nav-scroll-height);
@@ -43,11 +48,8 @@ const StyledHeader = styled.header`
       box-shadow: 0 10px 30px -10px var(--navy-shadow);
     `};
 
-  @media (max-width: 1080px) {
-    padding: 0 40px;
-  }
   @media (max-width: 768px) {
-    padding: 0 25px;
+    padding: 0 var(--page-gutter);
   }
 `;
 
@@ -57,7 +59,6 @@ const StyledNav = styled.nav`
   width: 100%;
   color: var(--lightest-slate);
   font-family: var(--font-mono);
-  counter-reset: item 0;
   z-index: 12;
 
   .logo {
@@ -101,19 +102,10 @@ const StyledLinks = styled.div`
     li {
       margin: 0 5px;
       position: relative;
-      counter-increment: item 1;
       font-size: var(--fz-xs);
 
       a {
         padding: 10px;
-
-        &:before {
-          content: '0' counter(item) '.';
-          margin-right: 5px;
-          color: var(--green);
-          font-size: var(--fz-xxs);
-          text-align: right;
-        }
       }
     }
   }
@@ -127,7 +119,7 @@ const StyledLinks = styled.div`
 
 const Nav = ({ isHome }) => {
   const [isMounted, setIsMounted] = useState(!isHome);
-  const scrollDirection = useScrollDirection('down');
+  const isScrolling = useScrollIdle(200);
   const [scrolledToTop, setScrolledToTop] = useState(true);
 
   const handleScroll = () => {
@@ -139,7 +131,7 @@ const Nav = ({ isHome }) => {
       setIsMounted(true);
     }, 100);
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       clearTimeout(timeout);
@@ -147,12 +139,13 @@ const Nav = ({ isHome }) => {
     };
   }, []);
 
+  const navVisible = scrolledToTop || !isScrolling;
   const timeout = isHome ? loaderDelay : 0;
   const fadeClass = isHome ? 'fade' : '';
   const fadeDownClass = isHome ? 'fadedown' : '';
 
   return (
-    <StyledHeader scrollDirection={scrollDirection} scrolledToTop={scrolledToTop}>
+    <StyledHeader $visible={navVisible} scrolledToTop={scrolledToTop}>
       <StyledNav>
         <TransitionGroup component={null}>
           {isMounted && (
@@ -190,10 +183,11 @@ const Nav = ({ isHome }) => {
           <TransitionGroup component={null}>
             {isMounted && (
               <CSSTransition classNames={fadeDownClass} timeout={timeout}>
-                <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}>
-                  <a href="/Saadfareed_Resume.pdf" className="resume-button">
+                <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms`, display: 'flex', alignItems: 'center' }}>
+                  <a href="/saadfareed_SSE.pdf" className="resume-button">
                     Resume
                   </a>
+                  <ThemeToggle />
                 </div>
               </CSSTransition>
             )}

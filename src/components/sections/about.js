@@ -1,38 +1,52 @@
 import React, { useEffect, useRef } from 'react';
-import { useStaticQuery, graphql } from 'gatsby';
-import Img from 'gatsby-image';
 import styled from 'styled-components';
 import { srConfig } from '@config';
 import sr from '@utils/sr';
+import { Section, Prose } from '@components/Section';
 
-const StyledAboutSection = styled.section`
-  max-width: 900px;
+const StyledAboutSection = styled(Section)``;
 
-  .inner {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    grid-gap: 50px;
+const StyledMainColumn = styled.div`
+  min-width: 0;
+`;
 
-    @media (max-width: 768px) {
-      display: block;
-    }
+const StyledSkills = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 40px;
+  width: 100%;
+  margin-top: 48px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 `;
-const StyledText = styled.div`
-  ul.skills-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(140px, 200px));
+
+const SkillGroup = styled.div`
+  h4 {
+    margin: 0 0 12px;
+    color: var(--lightest-slate);
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  ul {
     padding: 0;
-    margin: 20px 0 0 0;
-    overflow: hidden;
+    margin: 0;
     list-style: none;
 
     li {
       position: relative;
-      margin-bottom: 10px;
-      padding-left: 20px;
+      margin-bottom: 8px;
+      padding-left: 18px;
+      color: var(--slate);
       font-family: var(--font-mono);
       font-size: var(--fz-xs);
+      line-height: 1.5;
 
       &:before {
         content: '▹';
@@ -40,18 +54,20 @@ const StyledText = styled.div`
         left: 0;
         color: var(--green);
         font-size: var(--fz-sm);
-        line-height: 12px;
+        line-height: 1.2;
       }
     }
   }
 `;
+
 const StyledPic = styled.div`
   position: relative;
-  max-width: 300px;
+  width: 100%;
+  max-width: 260px;
 
   @media (max-width: 768px) {
-    margin: 50px auto 0;
-    width: 70%;
+    max-width: 280px;
+    margin-top: 8px;
   }
 
   .wrapper {
@@ -100,7 +116,7 @@ const StyledPic = styled.div`
     &:before {
       top: 0;
       left: 0;
-      background-color: var(--navy);
+      background-color: var(--image-overlay);
       mix-blend-mode: screen;
     }
 
@@ -113,67 +129,107 @@ const StyledPic = styled.div`
   }
 `;
 
-const About = () => {
-  const data = useStaticQuery(graphql`
-    query {
-      avatar: file(sourceInstanceName: { eq: "images" }, relativePath: { eq: "image.jpeg" }) {
-        childImageSharp {
-          fluid(maxWidth: 500, traceSVG: { color: "#64ffda" }) {
-            ...GatsbyImageSharpFluid_withWebp_tracedSVG
-          }
-        }
-      }
-    }
-  `);
+const StyledEducation = styled.div`
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--lightest-navy);
 
+  h4 {
+    margin: 0 0 8px;
+    color: var(--lightest-slate);
+    font-size: var(--fz-md);
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    color: var(--slate);
+    font-size: var(--fz-sm);
+    line-height: var(--text-line-height);
+  }
+
+  .range {
+    margin-top: 4px;
+    color: var(--light-slate);
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+  }
+`;
+
+const skillGroups = [
+  {
+    title: 'Languages & Frameworks',
+    items: ['Python (Django, FastAPI)', 'Node.js', 'Go', 'TypeScript', 'SQL'],
+  },
+  {
+    title: 'Backend',
+    items: ['REST / gRPC', 'Microservices', 'SQS', 'MQTT', 'Redis'],
+  },
+  {
+    title: 'Databases',
+    items: ['PostgreSQL', 'MongoDB', 'Cassandra', 'Elasticsearch', 'DynamoDB'],
+  },
+  {
+    title: 'DevOps',
+    items: ['AWS (Lambda, SQS, EC2)', 'Docker'],
+  },
+];
+
+const About = () => {
   const revealContainer = useRef(null);
 
   useEffect(() => {
     sr.reveal(revealContainer.current, srConfig());
   }, []);
 
-  const skills = ['JavaScript (ES6+)', 'Python', 'Django', 'Vue', 'NUXT', 'Vuetify', 'React', 'Redux', 'GraphQL', 'Node.js', 'Express Js', 'Docker', 'NLP', 'Data Analytics', 'FastAPI', 'LLM Models' ];
-
   return (
     <StyledAboutSection id="about" ref={revealContainer}>
       <h2 className="numbered-heading">About Me</h2>
 
-      <div className="inner" style={{textAlign:'justify'}}>
-        <StyledText>
-          <div>
-            <p>Hello! I'm Saad Fareed, a full stack software developer based in Lahore, PK.</p>
+      <StyledMainColumn>
+          <Prose>
+            <p>Hello! I&apos;m Saad Fareed, a Senior Backend Engineer based in Lahore, PK.</p>
 
             <p>
-              I build things on the internet and love building large scale applications with system design in mind. 
-              I transform my life through technology by creating some of the most widely used applications myself.
-              I Provide innovative business solutions tailored for enterprises and startups of every scale.
-              I not only Build some of the exceptional applications but offer valuable insights to elevate business.
-              I love to delve deeply into technology, exploring every aspect to enhance my skills and understanding.
-              My personal favorite projects are those driven by research and development.
-              I have worked in teams and also individually as a freelancer and got valuable learning experiences.
+              I architect high-throughput, distributed systems and event-driven backends that serve millions of
+              transactions. My work spans PCI DSS-compliant payment systems, multi-database architectures, real-time
+              data pipelines, and monolith-to-microservices migrations across Python, Node.js, and Go.
             </p>
 
             <p>
-              I'm Graduate of{' '}
-              <a href="https://uet.edu.pk">University Of Engineering and Technology,</a> I have worked in
-              engineering, development and research teams at <a href="https://www.linkedin.com/in/saad-haxxan/">Various Companies</a> where I work
-              on a wide variety of interesting and meaningful projects on a daily basis.
+              I&apos;ve shipped production systems at{' '}
+              <a href="https://www.linkedin.com/in/saad-fareed/">Foodie, Agrilift, CodeViz, and OCloud Solutions</a>,
+              collaborating with cross-functional teams in fast-paced engineering environments.
             </p>
+          </Prose>
 
-            <p>Here are a few technologies I've been working with recently:</p>
-          </div>
+          <StyledEducation>
+            <h4>University of Engineering and Technology, Lahore</h4>
+            <p>Bachelor of Science in Computer Science</p>
+            <p className="range">2018 – 2022</p>
+          </StyledEducation>
+      </StyledMainColumn>
 
-          <ul className="skills-list">
-            {skills && skills.map((skill, i) => <li key={i}>{skill}</li>)}
-          </ul>
-        </StyledText>
+      {/* Profile photo temporarily hidden
+      <StyledPic className="profile-photo">
+        <div className="wrapper">
+          <Img fluid={data.avatar.childImageSharp.fluid} alt="Saad Fareed" className="img" />
+        </div>
+      </StyledPic>
+      */}
 
-        <StyledPic>
-          <div className="wrapper">
-            <Img fluid={data.avatar.childImageSharp.fluid} alt="Avatar" className="img" />
-          </div>
-        </StyledPic>
-      </div>
+      <StyledSkills>
+        {skillGroups.map(({ title, items }) => (
+          <SkillGroup key={title}>
+            <h4>{title}</h4>
+            <ul>
+              {items.map(item => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </SkillGroup>
+        ))}
+      </StyledSkills>
     </StyledAboutSection>
   );
 };

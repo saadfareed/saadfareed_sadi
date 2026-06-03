@@ -5,12 +5,12 @@ import styled from 'styled-components';
 import { srConfig } from '@config';
 import { KEY_CODES } from '@utils';
 import sr from '@utils/sr';
+import { Section } from '@components/Section';
 
-const StyledJobsSection = styled.section`
-  max-width: 700px;
-
+const StyledJobsSection = styled(Section)`
   .inner {
     display: flex;
+    gap: 20px;
 
     @media (max-width: 600px) {
       display: block;
@@ -123,6 +123,7 @@ const StyledTabContent = styled.div`
   height: auto;
   padding-top: 10px;
   padding-left: 30px;
+  text-align: left;
 
   @media (max-width: 768px) {
     padding-left: 20px;
@@ -133,6 +134,12 @@ const StyledTabContent = styled.div`
 
   ul {
     ${({ theme }) => theme.mixins.fancyList};
+    line-height: var(--text-line-height);
+
+    li {
+      margin-bottom: 14px;
+      padding-left: 26px;
+    }
   }
 
   h3 {
@@ -155,7 +162,7 @@ const StyledTabContent = styled.div`
 
 const Jobs = () => {
   const data = useStaticQuery(graphql`
-    query {
+    query JobsSectionQuery {
       jobs: allMarkdownRemark(
         filter: { fileAbsolutePath: { regex: "/jobs/" } }
         sort: {frontmatter: {date: DESC}}
@@ -262,12 +269,16 @@ const Jobs = () => {
                   hidden={activeTabId !== i}>
                   <h3>
                     <span>{title}</span>
-                    <span className="company">
-                      &nbsp;@&nbsp;
-                      <a href={url} className="inline-link">
-                        {company}
-                      </a>
-                    </span>
+                    {url ? (
+                      <span className="company">
+                        &nbsp;@&nbsp;
+                        <a href={url} className="inline-link">
+                          {company}
+                        </a>
+                      </span>
+                    ) : (
+                      <span className="company">&nbsp;@&nbsp;{company}</span>
+                    )}
                   </h3>
 
                   <p className="range">{range}</p>

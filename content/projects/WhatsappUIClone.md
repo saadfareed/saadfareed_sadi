@@ -10,7 +10,7 @@ tech:
   - iOS
   - Android
 company: 'Individual'
-showInProjects: true
+showInProjects: false
 ---
 
 Whats App UI Clone with Flutter

@@ -4,10 +4,10 @@ module.exports = {
   siteMetadata: {
     title: 'Saad Fareed',
     description:
-      'A Tech enthusiast with a keen interest in Artificial Intelligence, Cyber security, Cloud Computing and Block Chain. An aspiring Data Scientist with a focus on Python for Machine Learning, Deep learning for computer vision and Natural Language Processing.',
+      'Senior Backend Engineer specializing in Python (Django, FastAPI), microservices, and event-driven systems. Experienced in PCI DSS-compliant payments, multi-database architectures, and high-throughput distributed systems on AWS.',
     siteUrl: 'https://saadfareed.com', // No trailing slash allowed!
     image: '/og.png', // Path to your image you placed in the 'static' folder
-    twitterUsername: '@HaxxanSaad',
+    twitterUsername: '@saadfareed',
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -22,8 +22,8 @@ module.exports = {
         name: 'Saad Fareed',
         short_name: 'Saad Fareed',
         start_url: '/',
-        background_color: config.colors.darkNavy,
-        theme_color: config.colors.navy,
+        background_color: config.colors.primary,
+        theme_color: config.colors.secondary,
         display: 'minimal-ui',
         icon: 'src/images/logo.png',
       },
@@ -69,7 +69,7 @@ module.exports = {
               maxWidth: 700,
               linkImagesToOriginal: true,
               quality: 90,
-              tracedSVG: { color: config.colors.green },
+              tracedSVG: { color: config.colors.secondary },
             },
           },
           {
@@ -142,9 +142,12 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-google-analytics`,
+      resolve: `gatsby-plugin-google-gtag`,
       options: {
-        trackingId: 'UA-45666519-2',
+        trackingIds: [process.env.GATSBY_GA_MEASUREMENT_ID || 'G-PLACEHOLDER'],
+        pluginConfig: {
+          head: true,
+        },
       },
     },
   ],

@@ -8,7 +8,7 @@ tech:
   - Python
   - Numpy
 company: 'Individual'
-showInProjects: true
+showInProjects: false
 ---
 
 This project uses a machine learning algorithm called logistic regression to predict the winning team of the world cup. The program is written in python and a jupyter notebook file.
