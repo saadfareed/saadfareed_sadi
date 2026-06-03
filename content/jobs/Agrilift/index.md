@@ -1,22 +1,16 @@
 ---
 date: '2024-05-05'
-title: 'Software Engineer II'
+title: 'Software Engineer I'
 company: 'Agrilift'
 location: 'Lahore, PK'
-range: 'May 2024 - Present'
+range: 'May 2024 - April 2025'
 url: 'https://farmlink.agrilift.ai/'
 ---
 
-- External Services APIs: Developed External Service APIs integrating with systems like AWS SQS for message
-queuing and Open Source Weather APIs for real-time weather data. Designed using the Django Framework with
-Class-Based Viewsets for modular and maintainable code. Improved response times by 15%.
+- Integrated AWS SQS for async data processing in germination and crop health pipelines, reducing database load by 25% and improving system resilience.
 
-- Root Cause Analysis (RCA): Developed a Root Cause Analysis (RCA) feature to assist field teams in identifying crop
-health issues, reducing identification time and improving decision-making efficiency by 25%.
+- Resolved critical API performance bottlenecks — reduced calculation time by 40% through profiling and query optimisation.
 
-- Database Load Reduction: Utilized AWS SQS to reduce database load by 25% in Germination and Crop Health
-monitoring through asynchronous data processing.
+- Built a Root Cause Analysis (RCA) feature for field teams, cutting crop health issue identification time by 25% and improving agricultural decision accuracy.
 
-- Automating Data Workflows: Revamped utilities to meet Python PEP 8 standards, enhancing readability and
-performance. Developed a Weather Utility for retrieving hourly weather conditions, ensuring real-time data for
-improved agricultural decision-making and crop health reporting.
+- Developed weather data utilities (hourly conditions, anomaly detection) by analysing 5 years of historical data in collaboration with Data Science and Analytics teams.

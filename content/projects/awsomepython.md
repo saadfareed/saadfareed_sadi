@@ -5,7 +5,7 @@ github: 'https://github.com/saadhaxxan/Awesome-Python-Projects'
 external: ''
 tech:
   - Python
-showInProjects: true
+showInProjects: false
 ---
 
 A Curated List of Awesome projects made completely with Python.

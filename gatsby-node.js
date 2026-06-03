@@ -1,27 +1,13 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
- */
-
 const path = require('path');
-const _ = require('lodash');
+const featuredProjects = require('./src/data/projects');
 
-// https://www.gatsbyjs.org/docs/node-apis/#onCreateWebpackConfig
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
-  // https://www.gatsbyjs.org/docs/debugging-html-builds/#fixing-third-party-modules
   if (stage === 'build-html') {
     actions.setWebpackConfig({
       module: {
         rules: [
-          {
-            test: /scrollreveal/,
-            use: loaders.null(),
-          },
-          {
-            test: /animejs/,
-            use: loaders.null(),
-          },
+          { test: /scrollreveal/, use: loaders.null() },
+          { test: /animejs/, use: loaders.null() },
         ],
       },
     });
@@ -32,6 +18,8 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
       alias: {
         '@components': path.resolve(__dirname, 'src/components'),
         '@config': path.resolve(__dirname, 'src/config'),
+        '@context': path.resolve(__dirname, 'src/context'),
+        '@data': path.resolve(__dirname, 'src/data'),
         '@fonts': path.resolve(__dirname, 'src/fonts'),
         '@hooks': path.resolve(__dirname, 'src/hooks'),
         '@images': path.resolve(__dirname, 'src/images'),
@@ -40,5 +28,18 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
         '@utils': path.resolve(__dirname, 'src/utils'),
       },
     },
+  });
+};
+
+exports.createPages = async ({ actions }) => {
+  const { createPage } = actions;
+  const template = path.resolve('./src/templates/project.js');
+
+  featuredProjects.forEach(project => {
+    createPage({
+      path: `/projects/${project.slug}`,
+      component: template,
+      context: { slug: project.slug },
+    });
   });
 };

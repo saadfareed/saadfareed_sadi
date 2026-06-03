@@ -1,12 +1,14 @@
 ---
-date: '2016-08-01'
-title: 'Domain Name Generator Cli'
-github: 'https://github.com/saadhaxxan/Domainify-cli'
+date: '2023-06-01'
+title: 'Domainify CLI'
+github: 'https://github.com/saadfareed/Domainify-cli'
 external: ''
 tech:
-  - JS(ES6)
-  - Commander
+  - Python
+  - CLI
+  - Click
+company: 'Open Source'
 showInProjects: true
 ---
 
-A next generation CLI to generate domain names for your next website
+A Python CLI for domain availability checks and bulk lookups — built for developer workflows with clean command structure and scriptable output.

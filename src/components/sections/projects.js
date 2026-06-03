@@ -1,154 +1,63 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useStaticQuery, graphql } from 'gatsby';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import React, { useEffect, useRef } from 'react';
+import { useStaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
 import { srConfig } from '@config';
 import sr from '@utils/sr';
-import { Icon } from '@components/icons';
+import { Section } from '@components/Section';
+import {
+  CardsGrid,
+  ProjectCard,
+  CardHeader,
+  StatusBadge,
+  Year,
+  CardTitle,
+  CardTagline,
+  CardDescription,
+  MetricsGrid,
+  Metric,
+  TechList,
+  TechTag,
+  CardFooter,
+  CardActionExternal,
+} from '@components/ProjectCard';
 
-const StyledProjectsSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  h2 {
-    font-size: clamp(24px, 5vw, var(--fz-heading));
-  }
-
-  .archive-link {
-    font-family: var(--font-mono);
-    font-size: var(--fz-sm);
-    &:after {
-      bottom: 0.1em;
-    }
-  }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: 15px;
-    position: relative;
-    margin-top: 50px;
-
-    @media (max-width: 1080px) {
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-  }
-
-  .more-button {
-    ${({ theme }) => theme.mixins.button};
-    margin: 80px auto 0;
-  }
+const StyledProjectsSection = styled(Section)`
+  width: 100%;
 `;
 
-const StyledProject = styled.div`
-  cursor: default;
-  transition: var(--transition);
+const stripHtml = html =>
+  html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 
-  &:hover,
-  &:focus {
-    outline: 0;
-    .project-inner {
-      transform: translateY(-5px);
-    }
+const buildMetrics = (tech = [], year) => {
+  const metrics = [
+    { value: year, label: 'Year' },
+    { value: 'Open Source', label: 'Type' },
+  ];
+
+  tech.slice(0, 2).forEach((item, index) => {
+    metrics.push({ value: item, label: index === 0 ? 'Primary Stack' : 'Tools' });
+  });
+
+  while (metrics.length < 4) {
+    metrics.push({ value: 'Public', label: 'Availability' });
+    break;
   }
 
-  .project-inner {
-    ${({ theme }) => theme.mixins.boxShadow};
-    ${({ theme }) => theme.mixins.flexBetween};
-    flex-direction: column;
-    align-items: flex-start;
-    position: relative;
-    height: 100%;
-    padding: 2rem 1.75rem;
-    border-radius: var(--border-radius);
-    background-color: var(--light-navy);
-    transition: var(--transition);
-  }
-
-  .project-top {
-    ${({ theme }) => theme.mixins.flexBetween};
-    margin-bottom: 35px;
-
-    .folder {
-      color: var(--green);
-      svg {
-        width: 40px;
-        height: 40px;
-      }
-    }
-
-    .project-links {
-      display: flex;
-      align-items: center;
-      margin-right: -10px;
-      color: var(--light-slate);
-
-      a {
-        ${({ theme }) => theme.mixins.flexCenter};
-        padding: 5px 7px;
-
-        &.external {
-          svg {
-            width: 22px;
-            height: 22px;
-            margin-top: -4px;
-          }
-        }
-
-        svg {
-          width: 20px;
-          height: 20px;
-        }
-      }
-    }
-  }
-
-  .project-title {
-    margin: 0 0 10px;
-    color: var(--lightest-slate);
-    font-size: var(--fz-xxl);
-  }
-
-  .project-description {
-    color: var(--light-slate);
-    font-size: 17px;
-
-    a {
-      ${({ theme }) => theme.mixins.inlineLink};
-    }
-  }
-
-  .project-tech-list {
-    display: flex;
-    align-items: flex-end;
-    flex-grow: 1;
-    flex-wrap: wrap;
-    padding: 0;
-    margin: 20px 0 0 0;
-    list-style: none;
-
-    li {
-      font-family: var(--font-mono);
-      font-size: var(--fz-xxs);
-      line-height: 1.75;
-
-      &:not(:last-of-type) {
-        margin-right: 15px;
-      }
-    }
-  }
-`;
+  return metrics.slice(0, 4);
+};
 
 const Projects = () => {
   const data = useStaticQuery(graphql`
-    query {
+    query ProjectsSectionQuery {
       projects: allMarkdownRemark(
         filter: {
           fileAbsolutePath: { regex: "/projects/" }
           frontmatter: { showInProjects: { ne: false } }
         }
-        sort: {frontmatter: {date: DESC}}
+        sort: { frontmatter: { date: DESC } }
       ) {
         edges {
           node {
@@ -157,6 +66,8 @@ const Projects = () => {
               tech
               github
               external
+              date
+              company
             }
             html
           }
@@ -165,89 +76,79 @@ const Projects = () => {
     }
   `);
 
-  const [showMore, setShowMore] = useState(false);
-  const revealTitle = useRef(null);
-  const revealArchiveLink = useRef(null);
-  const revealProjects = useRef([]);
+  const revealContainer = useRef(null);
+  const revealCards = useRef([]);
 
   useEffect(() => {
-    sr.reveal(revealTitle.current, srConfig());
-    sr.reveal(revealArchiveLink.current, srConfig());
-    revealProjects.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
+    if (!sr) {
+      return;
+    }
+    sr.reveal(revealContainer.current, srConfig());
+    revealCards.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
   }, []);
 
-  const GRID_LIMIT = 6;
-  const projects = data.projects.edges.filter(({ node }) => node);
-  const firstSix = projects.slice(0, GRID_LIMIT);
-  const projectsToShow = showMore ? projects : firstSix;
+  const projects = data.projects.edges.map(({ node }) => node);
 
   return (
-    <StyledProjectsSection>
-      <h2 ref={revealTitle}>Other Projects</h2>
+    <StyledProjectsSection id="open-source" ref={revealContainer}>
+      <h2 className="numbered-heading">Open Source</h2>
+      <p className="section-intro">
+        Public repositories, CLI tools, and community projects — maintained for developers and shared on GitHub.
+      </p>
 
-      <TransitionGroup className="projects-grid">
-        {projectsToShow &&
-          projectsToShow.map(({ node }, i) => {
-            const { frontmatter, html } = node;
-            const { github, external, title, tech } = frontmatter;
+      <CardsGrid>
+        {projects.map((node, i) => {
+          const { frontmatter, html } = node;
+          const { github, external, title, tech = [], date, company } = frontmatter;
+          const year = date ? String(new Date(date).getFullYear()) : '—';
+          const description = stripHtml(html);
+          const metrics = buildMetrics(tech, year);
 
-            return (
-              <CSSTransition
-                key={i}
-                classNames="fadeup"
-                timeout={i >= GRID_LIMIT ? (i - GRID_LIMIT) * 300 : 300}
-                exit={false}>
-                <StyledProject
-                  key={i}
-                  ref={el => (revealProjects.current[i] = el)}
-                  tabIndex="0"
-                  style={{
-                    transitionDelay: `${i >= GRID_LIMIT ? (i - GRID_LIMIT) * 100 : 0}ms`,
-                  }}>
-                  <div className="project-inner">
-                    <header>
-                      <div className="project-top">
-                        <div className="folder">
-                          <Icon name="Folder" />
-                        </div>
-                        <div className="project-links">
-                          {github && (
-                            <a href={github} aria-label="GitHub Link">
-                              <Icon name="GitHub" />
-                            </a>
-                          )}
-                          {external && (
-                            <a href={external} aria-label="External Link" className="external">
-                              <Icon name="External" />
-                            </a>
-                          )}
-                        </div>
-                      </div>
+          return (
+            <ProjectCard key={title} ref={el => (revealCards.current[i] = el)}>
+              <CardHeader>
+                <StatusBadge>
+                  <span className="dot" aria-hidden="true" />
+                  Open Source
+                </StatusBadge>
+                <Year>{year}</Year>
+              </CardHeader>
 
-                      <h3 className="project-title">{title}</h3>
+              <CardTitle>{title}</CardTitle>
+              <CardTagline>{company || 'Community Project'}</CardTagline>
+              <CardDescription>{description}</CardDescription>
 
-                      <div
-                        className="project-description"
-                        dangerouslySetInnerHTML={{ __html: html }}
-                      />
-                    </header>
+              <MetricsGrid>
+                {metrics.map(metric => (
+                  <Metric key={`${metric.label}-${metric.value}`}>
+                    <strong>{metric.value}</strong>
+                    <span>{metric.label}</span>
+                  </Metric>
+                ))}
+              </MetricsGrid>
 
-                    <footer>
-                      {tech && (
-                        <ul className="project-tech-list">
-                          {tech.map((tech, i) => (
-                            <li key={i}>{tech}</li>
-                          ))}
-                        </ul>
-                      )}
-                    </footer>
-                  </div>
-                </StyledProject>
-              </CSSTransition>
-            );
-          })}
-      </TransitionGroup>
+              <TechList>
+                {tech.map(item => (
+                  <TechTag key={item}>{item}</TechTag>
+                ))}
+              </TechList>
 
+              <CardFooter>
+                {github && (
+                  <CardActionExternal href={github} target="_blank" rel="noreferrer">
+                    GitHub ↗
+                  </CardActionExternal>
+                )}
+                {external && (
+                  <CardActionExternal href={external} target="_blank" rel="noreferrer">
+                    Live ↗
+                  </CardActionExternal>
+                )}
+              </CardFooter>
+            </ProjectCard>
+          );
+        })}
+      </CardsGrid>
     </StyledProjectsSection>
   );
 };

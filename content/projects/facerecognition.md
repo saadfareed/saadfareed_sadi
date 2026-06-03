@@ -9,7 +9,7 @@ tech:
   - Keras
   - OpenCV
 company: 'Individual'
-showInProjects: true
+showInProjects: false
 ---
 
 Face Recognition and Classification Using FaceNet and MTCNN

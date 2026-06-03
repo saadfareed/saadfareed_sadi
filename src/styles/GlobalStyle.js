@@ -7,18 +7,9 @@ const GlobalStyle = createGlobalStyle`
   ${Fonts};
 
   :root {
-    --dark-navy: #020c1b;
-    --navy: #0a192f;
-    --light-navy: #172a45;
-    --lightest-navy: #303C55;
-    --navy-shadow: rgba(2, 12, 27, 0.7);
-    --slate: #8892b0;
-    --light-slate: #a8b2d1;
-    --lightest-slate: #ccd6f6;
-    --white: #e6f1ff;
-    --green: #64ffda;
-    --green-tint: rgba(100, 255, 218, 0.1);
-
+    --primary: #0a192f;
+    --secondary: #64ffda;
+    --brand: #64ffda;
     --font-sans: 'Calibre', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif;
     --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
 
@@ -32,11 +23,20 @@ const GlobalStyle = createGlobalStyle`
     --fz-heading: 32px;
 
     --border-radius: 4px;
+    --card-radius: 12px;
     --nav-height: 100px;
     --nav-scroll-height: 70px;
 
     --tab-height: 42px;
     --tab-width: 120px;
+
+    --content-max-width: 1000px;
+    --content-wide: 1000px;
+    --content-narrow: 640px;
+    --page-gutter: clamp(24px, 5vw, 72px);
+    --side-rail-space: 56px;
+    --text-line-height: 1.65;
+    --paragraph-spacing: 1.25em;
 
     --easing: cubic-bezier(0.645, 0.045, 0.355, 1);
     --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -49,9 +49,78 @@ const GlobalStyle = createGlobalStyle`
     --ham-after-active: bottom 0.1s ease-out, transform 0.22s cubic-bezier(0.215, 0.61, 0.355, 1) 0.12s;
   }
 
+  :root,
+  [data-theme='dark'] {
+    --bg: var(--primary);
+    --surface: color-mix(in srgb, var(--secondary) 7%, var(--primary));
+    --border: color-mix(in srgb, var(--secondary) 20%, var(--primary));
+    --text: color-mix(in srgb, var(--secondary) 72%, var(--primary));
+    --heading: var(--secondary);
+    --secondary-soft: color-mix(in srgb, var(--secondary) 12%, transparent);
+    --shadow: color-mix(in srgb, var(--primary) 55%, transparent);
+    --nav-bg: color-mix(in srgb, var(--primary) 94%, transparent);
+    --nav-bg-scrolled: color-mix(in srgb, var(--primary) 88%, transparent);
+    --image-overlay: var(--primary);
+    --accent: var(--secondary);
+    color-scheme: dark;
+  }
+
+  [data-theme='light'] {
+    --bg: #ffffff;
+    --surface: #f4f6f8;
+    --border: #0a192f;
+    --text: #0a192f;
+    --heading: #0a192f;
+    --secondary: #0a192f;
+    --brand: #64ffda;
+    --secondary-soft: color-mix(in srgb, #0a192f 12%, transparent);
+    --shadow: color-mix(in srgb, var(--primary) 8%, transparent);
+    --nav-bg: color-mix(in srgb, #ffffff 88%, transparent);
+    --nav-bg-scrolled: color-mix(in srgb, #ffffff 94%, transparent);
+    --image-overlay: #ffffff;
+    --accent: #0a192f;
+    color-scheme: light;
+  }
+
+  [data-theme='light'] .profile-photo .wrapper:before {
+    mix-blend-mode: normal;
+    opacity: 0.1;
+  }
+
+  :root,
+  [data-theme='dark'],
+  [data-theme='light'] {
+    --green: var(--accent);
+    --green-tint: var(--secondary-soft);
+    --navy: var(--bg);
+    --light-navy: var(--surface);
+    --lightest-navy: var(--border);
+    --slate: var(--text);
+    --light-slate: var(--text);
+    --lightest-slate: var(--heading);
+    --white: var(--heading);
+    --surface-elevated: var(--surface);
+    --navy-shadow: var(--shadow);
+  }
+
   html {
     box-sizing: border-box;
     width: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   *,
@@ -61,8 +130,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::selection {
-    background-color: var(--slate);
-    color: var(--lightest-slate);
+    background-color: color-mix(in srgb, var(--secondary) 35%, var(--primary));
+    color: var(--heading);
   }
 
   body {
@@ -72,11 +141,12 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background-color: var(--navy);
-    color: var(--slate);
+    background-color: var(--bg);
+    color: var(--text);
     font-family: var(--font-sans);
     font-size: var(--fz-xl);
-    line-height: 1.3;
+    line-height: var(--text-line-height);
+    transition: background-color 0.25s ease, color 0.25s ease;
 
     @media (max-width: 480px) {
       font-size: var(--fz-lg);
@@ -114,44 +184,55 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     max-width: 1600px;
     min-height: 100vh;
-    padding: 200px 150px;
+    padding: 120px var(--page-gutter);
 
-    @media (max-width: 1080px) {
-      padding: 200px 100px;
-    }
     @media (max-width: 768px) {
-      padding: 150px 50px;
+      padding: 100px var(--page-gutter);
     }
+
     @media (max-width: 480px) {
-      padding: 125px 25px;
+      padding: 90px var(--page-gutter);
     }
 
     &.fillHeight {
-      padding: 0 150px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 var(--page-gutter);
 
-      @media (max-width: 1080px) {
-        padding: 0 100px;
-      }
-      @media (max-width: 768px) {
-        padding: 0 50px;
-      }
-      @media (max-width: 480px) {
-        padding: 0 25px;
+      @media (min-width: 769px) {
+        padding-left: calc(var(--page-gutter) + var(--side-rail-space));
+        padding-right: calc(var(--page-gutter) + var(--side-rail-space));
       }
     }
   }
 
   section {
-    margin: 0 auto;
-    padding: 50px 0;
-    max-width: 1000px;
+    margin: 0;
+    padding: 64px 0;
+    max-width: var(--content-max-width);
+    width: 100%;
 
     @media (max-width: 768px) {
-      padding: 80px 0;
+      padding: 56px 0;
     }
 
     @media (max-width: 480px) {
-      padding: 60px 0;
+      padding: 48px 0;
+    }
+  }
+
+  .prose {
+    color: var(--text);
+    line-height: var(--text-line-height);
+    text-align: left;
+
+    p {
+      margin: 0 0 var(--paragraph-spacing);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 
@@ -161,19 +242,22 @@ const GlobalStyle = createGlobalStyle`
   h4,
   h5,
   h6 {
-    margin: 0 0 10px 0;
+    margin: 0;
+    padding: 0;
     font-weight: 600;
-    color: var(--lightest-slate);
+    color: var(--heading);
     line-height: 1.1;
   }
 
   .big-heading {
     margin: 0;
+    padding: 0;
     font-size: clamp(40px, 8vw, 80px);
   }
 
   .medium-heading {
     margin: 0;
+    padding: 0;
     font-size: clamp(40px, 8vw, 60px);
   }
 
@@ -181,27 +265,11 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     align-items: center;
     position: relative;
-    margin: 10px 0 40px;
+    margin: 0 0 16px;
+    padding: 0;
     width: 100%;
     font-size: clamp(26px, 5vw, var(--fz-heading));
     white-space: nowrap;
-
-    &:before {
-      position: relative;
-      bottom: 4px;
-      counter-increment: section;
-      content: '0' counter(section) '.';
-      margin-right: 10px;
-      color: var(--green);
-      font-family: var(--font-mono);
-      font-size: clamp(var(--fz-md), 3vw, var(--fz-xl));
-      font-weight: 400;
-
-      @media (max-width: 480px) {
-        margin-bottom: -3px;
-        margin-right: 5px;
-      }
-    }
 
     &:after {
       content: '';
@@ -211,7 +279,7 @@ const GlobalStyle = createGlobalStyle`
       width: 300px;
       height: 1px;
       margin-left: 20px;
-      background-color: var(--lightest-navy);
+      background-color: var(--border);
 
       @media (max-width: 1080px) {
         width: 200px;
@@ -223,6 +291,24 @@ const GlobalStyle = createGlobalStyle`
         margin-left: 10px;
       }
     }
+  }
+
+  .section-lead {
+    margin: 0 0 12px;
+    padding: 0;
+    color: var(--heading);
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .section-intro {
+    max-width: 640px;
+    margin: 0 0 40px;
+    padding: 0;
+    color: var(--text);
+    font-size: var(--fz-lg);
+    line-height: var(--text-line-height);
   }
 
   img,
@@ -260,7 +346,12 @@ const GlobalStyle = createGlobalStyle`
 
     &:hover,
     &:focus {
-      color: var(--green);
+      color: var(--secondary);
+    }
+
+    [data-theme='light'] &:hover,
+    [data-theme='light'] &:focus {
+      color: #0a192f;
     }
 
     &.inline-link {
@@ -274,23 +365,35 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 0;
   }
 
-  input, textarea {
+  input,
+  select,
+  textarea {
     border-radius: 0;
     outline: 0;
+
+    [data-theme='light'] & {
+      border-color: #0a192f;
+    }
 
     &:focus {
       outline: 0;
     }
+
     &:focus,
     &:active {
       &::placeholder {
         opacity: 0.5;
       }
     }
+
+    [data-theme='light'] &:hover,
+    [data-theme='light'] &:focus {
+      border-color: #0a192f;
+    }
   }
 
   p {
-    margin: 0 0 15px 0;
+    margin: 0 0 var(--paragraph-spacing);
 
     &:last-child,
     &:last-of-type {
@@ -302,8 +405,8 @@ const GlobalStyle = createGlobalStyle`
     }
 
     & > code {
-      background-color: var(--light-navy);
-      color: var(--white);
+      background-color: var(--surface);
+      color: var(--heading);
       font-size: var(--fz-sm);
       border-radius: var(--border-radius);
       padding: 0.3em 0.5em;
@@ -324,14 +427,14 @@ const GlobalStyle = createGlobalStyle`
           content: '▹';
           position: absolute;
           left: 0;
-          color: var(--green);
+          color: var(--secondary);
         }
       }
     }
   }
 
   blockquote {
-    border-left-color: var(--green);
+    border-left-color: var(--secondary);
     border-left-style: solid;
     border-left-width: 1px;
     margin-left: 0px;
@@ -345,7 +448,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   hr {
-    background-color: var(--lightest-navy);
+    background-color: var(--border);
     height: 1px;
     border-width: 0px;
     border-style: initial;
@@ -360,18 +463,22 @@ const GlobalStyle = createGlobalStyle`
   }
 
   #logo {
-    color: var(--green);
+    color: var(--brand);
+
+    [data-theme='light'] & {
+      color: var(--secondary);
+    }
   }
 
   .overline {
-    color: var(--green);
+    color: var(--secondary);
     font-family: var(--font-mono);
     font-size: var(--fz-md);
     font-weight: 400;
   }
 
   .subtitle {
-    color: var(--green);
+    color: var(--secondary);
     margin: 0 0 20px 0;
     font-size: var(--fz-md);
     font-family: var(--font-mono);
@@ -394,7 +501,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     align-items: center;
     margin-bottom: 50px;
-    color: var(--green);
+    color: var(--secondary);
 
     .arrow {
       display: block;

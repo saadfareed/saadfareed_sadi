@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { navLinks } from '@config';
 import { KEY_CODES } from '@utils';
 import { useOnClickOutside } from '@hooks';
+import ThemeToggle from '@components/ThemeToggle';
 
 const StyledMenu = styled.div`
   display: none;
@@ -98,7 +99,7 @@ const StyledSidebar = styled.aside`
     width: min(75vw, 400px);
     height: 100vh;
     outline: 0;
-    background-color: var(--light-navy);
+    background-color: var(--surface);
     box-shadow: -10px 0px 30px -15px var(--navy-shadow);
     z-index: 9;
     transform: translateX(${props => (props.menuOpen ? 0 : 100)}vw);
@@ -124,19 +125,10 @@ const StyledSidebar = styled.aside`
     li {
       position: relative;
       margin: 0 auto 20px;
-      counter-increment: item 1;
       font-size: clamp(var(--fz-sm), 4vw, var(--fz-lg));
 
       @media (max-width: 600px) {
         margin: 0 auto 10px;
-      }
-
-      &:before {
-        content: '0' counter(item) '.';
-        display: block;
-        margin-bottom: 5px;
-        color: var(--green);
-        font-size: var(--fz-sm);
       }
     }
 
@@ -260,9 +252,11 @@ const Menu = () => {
               </ol>
             )}
 
-            <a href="/Saadfareed_Resume.pdf" className="resume-link">
+            <a href="/saadfareed_SSE.pdf" className="resume-link">
               Resume
             </a>
+
+            <ThemeToggle />
           </nav>
         </StyledSidebar>
       </div>
