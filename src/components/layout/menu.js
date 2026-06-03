@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { navLinks } from '@config';
 import { KEY_CODES } from '@utils';
 import { useOnClickOutside } from '@hooks';
-import ThemeToggle from '@components/ThemeToggle';
+import { ThemeToggle } from '@components/ui';
 
 const StyledMenu = styled.div`
   display: none;

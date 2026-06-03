@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { srConfig } from '@config';
 import { KEY_CODES } from '@utils';
 import sr from '@utils/sr';
-import { Section } from '@components/Section';
+import { Section } from '@components/ui';
 
 const StyledJobsSection = styled(Section)`
   .inner {

@@ -1,20 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { getPreferredTheme, THEME_STORAGE_KEY } from '@lib/theme';
 
 const ThemeContext = createContext(null);
-
-const getPreferredTheme = () => {
-  if (typeof window === 'undefined') {
-    return 'dark';
-  }
-
-  const stored = window.localStorage.getItem('theme');
-  if (stored === 'light' || stored === 'dark') {
-    return stored;
-  }
-
-  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-};
 
 export const ThemeProvider = ({ children }) => {
   const [colorMode, setColorMode] = useState('dark');
@@ -29,7 +17,7 @@ export const ThemeProvider = ({ children }) => {
     setColorMode(prev => {
       const next = prev === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
-      window.localStorage.setItem('theme', next);
+      window.localStorage.setItem(THEME_STORAGE_KEY, next);
       return next;
     });
   };

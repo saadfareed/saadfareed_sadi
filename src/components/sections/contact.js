@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { srConfig, email, resume, linkedin } from '@config';
 import sr from '@utils/sr';
-import { Section, Prose } from '@components/Section';
+import { Section, Prose } from '@components/ui';
 
 const StyledContactSection = styled(Section)`
   margin-bottom: 50px;

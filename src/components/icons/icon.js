@@ -1,21 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  IconAppStore,
-  IconCodepen,
-  IconExternal,
-  IconFolder,
-  IconFork,
-  IconGitHub,
-  IconInstagram,
-  IconLinkedin,
-  IconLoader,
-  IconLogo,
-  IconPlayStore,
-  IconStar,
-  IconTwitter,
-  IconZap,
-} from '@components/icons';
+import IconAppStore from './appstore';
+import IconCodepen from './codepen';
+import IconExternal from './external';
+import IconFolder from './folder';
+import IconFork from './fork';
+import IconGitHub from './github';
+import IconInstagram from './instagram';
+import IconLinkedin from './linkedin';
+import IconLoader from './loader';
+import IconLogo from './logo';
+import IconPlayStore from './playstore';
+import IconStar from './star';
+import IconTwitter from './twitter';
+import IconZap from './zap';
 
 const Icon = ({ name }) => {
   switch (name) {

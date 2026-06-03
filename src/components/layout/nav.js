@@ -6,8 +6,8 @@ import styled, { css } from 'styled-components';
 import { navLinks } from '@config';
 import { loaderDelay } from '@utils';
 import { useScrollIdle } from '@hooks';
-import { Menu } from '@components';
-import ThemeToggle from '@components/ThemeToggle';
+import Menu from './menu';
+import { ThemeToggle } from '@components/ui';
 import { IconLogo } from '@components/icons';
 
 const StyledHeader = styled.header`
