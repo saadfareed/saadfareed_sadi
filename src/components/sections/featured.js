@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { featuredProjects, srConfig } from '@config';
 import sr from '@utils/sr';
-import { Section } from '@components/Section';
 import {
+  Section,
   CardsGrid,
   ProjectCard,
   CardHeader,
@@ -20,7 +20,7 @@ import {
   CardFooter,
   CardActionLink,
   CardActionExternal,
-} from '@components/ProjectCard';
+} from '@components/ui';
 
 const StyledFeaturedSection = styled(Section)`
   width: 100%;

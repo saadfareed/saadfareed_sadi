@@ -3,8 +3,8 @@ import { useStaticQuery, graphql } from 'gatsby';
 import styled from 'styled-components';
 import { srConfig } from '@config';
 import sr from '@utils/sr';
-import { Section } from '@components/Section';
 import {
+  Section,
   CardsGrid,
   ProjectCard,
   CardHeader,
@@ -19,35 +19,12 @@ import {
   TechTag,
   CardFooter,
   CardActionExternal,
-} from '@components/ProjectCard';
+} from '@components/ui';
+import { stripHtml, buildOpenSourceMetrics } from '@utils/markdown';
 
 const StyledProjectsSection = styled(Section)`
   width: 100%;
 `;
-
-const stripHtml = html =>
-  html
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-const buildMetrics = (tech = [], year) => {
-  const metrics = [
-    { value: year, label: 'Year' },
-    { value: 'Open Source', label: 'Type' },
-  ];
-
-  tech.slice(0, 2).forEach((item, index) => {
-    metrics.push({ value: item, label: index === 0 ? 'Primary Stack' : 'Tools' });
-  });
-
-  while (metrics.length < 4) {
-    metrics.push({ value: 'Public', label: 'Availability' });
-    break;
-  }
-
-  return metrics.slice(0, 4);
-};
 
 const Projects = () => {
   const data = useStaticQuery(graphql`
@@ -102,7 +79,7 @@ const Projects = () => {
           const { github, external, title, tech = [], date, company } = frontmatter;
           const year = date ? String(new Date(date).getFullYear()) : '—';
           const description = stripHtml(html);
-          const metrics = buildMetrics(tech, year);
+          const metrics = buildOpenSourceMetrics(tech, year);
 
           return (
             <ProjectCard key={title} ref={el => (revealCards.current[i] = el)}>

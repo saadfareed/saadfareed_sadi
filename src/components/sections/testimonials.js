@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { testimonials, srConfig } from '@config';
 import sr from '@utils/sr';
-import { Section } from '@components/Section';
+import { Section } from '@components/ui';
 
 const AUTOPLAY_DELAY = 2000;
 

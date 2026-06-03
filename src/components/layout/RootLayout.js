@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { Head, Loader, Nav, Social, Email, Footer } from '@components';
+import Head from './head';
+import Loader from './loader';
+import Nav from './nav';
+import Social from './social';
+import Email from './email';
+import Footer from './footer';
 import { ThemeProvider as ColorThemeProvider } from '@context/ThemeContext';
 import { GlobalStyle, theme } from '@styles';
 import sr from '@utils/sr';

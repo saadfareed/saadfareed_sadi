@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { srConfig } from '@config';
 import sr from '@utils/sr';
-import { Section, Prose } from '@components/Section';
+import { Section, Prose } from '@components/ui';
 
 const StyledAboutSection = styled(Section)``;
 
