@@ -3,49 +3,48 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 import { email, resume, heroKeywords } from '@config';
 import { navDelay, loaderDelay } from '@utils';
+import { LedgerFields, FieldRow } from '@components/ui';
 
 const StyledHeroSection = styled.section`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   justify-content: center;
   min-height: 100vh;
   width: 100%;
   max-width: var(--content-max-width);
-  padding-top: var(--nav-height);
+  padding-top: calc(var(--nav-height) + 56px);
 
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 24px;
-    color: var(--secondary);
+  @media (max-width: 480px) {
+    padding-top: calc(var(--nav-height) + 32px);
+  }
+
+  .letterhead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
     font-family: var(--font-mono);
     font-size: var(--fz-xs);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-
-    span.dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: var(--brand);
-      box-shadow: 0 0 12px color-mix(in srgb, var(--brand) 60%, transparent);
-    }
   }
 
   h1.big-heading {
-    margin: 0;
-    line-height: 1.05;
+    margin: 44px 0 24px;
+    max-width: 15ch;
 
-    .accent {
-      color: var(--secondary);
+    em {
+      font-style: italic;
+      font-weight: 500;
     }
   }
 
   .bio {
-    max-width: 640px;
-    margin: 28px 0 0;
+    max-width: 62ch;
+    margin: 0;
     color: var(--text);
     font-size: var(--fz-lg);
     line-height: var(--text-line-height);
@@ -56,29 +55,12 @@ const StyledHeroSection = styled.section`
     }
   }
 
-  .keywords {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 32px;
-  }
-
-  .keyword {
-    padding: 8px 16px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: var(--surface);
-    color: var(--heading);
-    font-family: var(--font-mono);
-    font-size: var(--fz-xs);
-  }
-
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 16px;
-    margin-top: 48px;
+    gap: 28px;
+    margin-top: 40px;
   }
 
   .primary-link {
@@ -87,29 +69,19 @@ const StyledHeroSection = styled.section`
   }
 
   .secondary-link {
-    ${({ theme }) => theme.mixins.smallButton};
-    margin: 0;
-    padding: 16px 28px;
-    font-size: var(--fz-sm);
-  }
-
-  .resume-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    margin-left: 8px;
+    gap: 6px;
     color: var(--text);
     font-family: var(--font-mono);
     font-size: var(--fz-sm);
-
-    svg {
-      width: 16px;
-      height: 16px;
-    }
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
 
     &:hover,
     &:focus {
-      color: var(--secondary);
+      color: var(--heading);
+      border-bottom-color: var(--heading);
     }
   }
 `;
@@ -131,43 +103,46 @@ const Hero = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+  const fields = [
+    { label: 'Account Holder', value: 'Saad Fareed' },
+    { label: 'Role', value: 'Senior Backend Engineer' },
+    { label: 'Period', value: '2022 — Present' },
+    { label: 'Stack', value: heroKeywords.join(', ') },
+  ];
+
   const items = [
     {
       content: (
-        <p className="status">
-          <span className="dot" aria-hidden="true" />
-          Available for opportunities
+        <p className="letterhead">
+          <span>Statement of Record</span>
+          <span>Lahore, PK — UTC+5</span>
         </p>
       ),
     },
     {
       content: (
+        <LedgerFields>
+          {fields.map(field => (
+            <FieldRow key={field.label} label={field.label} value={field.value} />
+          ))}
+          <FieldRow label="Status" value="Available for new engagements" status />
+        </LedgerFields>
+      ),
+    },
+    {
+      content: (
         <h1 className="big-heading">
-          Backend <span className="accent">Developer.</span>
-          <br />
-          Full-Stack Ready.
+          Backend systems built to be <em>trusted</em> with the money.
         </h1>
       ),
     },
     {
       content: (
         <p className="bio">
-          Hi, I&apos;m <strong>Saad Fareed</strong> — I architect{' '}
-          <strong>microservices</strong>, ship <strong>full-stack apps</strong>, and build{' '}
-          <strong>products people actually use</strong>. From startups to scale-ups, I deliver
-          systems built to <strong>last and scale</strong>.
+          I&apos;m <strong>Saad Fareed</strong>. I design the payment orchestration, audit trails,
+          and distributed data systems that keep transactions honest at scale — currently shipping
+          PCI-compliant checkout and refund infrastructure for a high-throughput order platform.
         </p>
-      ),
-    },
-    {
-      content: (
-        <div className="keywords">
-          {heroKeywords.map(keyword => (
-            <span key={keyword} className="keyword">
-              {keyword}
-            </span>
-          ))}
-        </div>
       ),
     },
     {
@@ -179,12 +154,7 @@ const Hero = () => {
           <a href={`mailto:${email}`} className="secondary-link">
             Hire Me
           </a>
-          <a href={resume} className="resume-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
+          <a href={resume} className="secondary-link">
             Resume
           </a>
         </div>

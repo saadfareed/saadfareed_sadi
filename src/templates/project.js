@@ -1,126 +1,68 @@
 import React from 'react';
-import { Link, graphql } from 'gatsby';
+import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Layout } from '@components/layout';
+import { LedgerFields, FieldRow } from '@components/ui';
 import featuredProjects from '@data/projects';
+
+const HeroBand = styled.div`
+  width: 100%;
+  background: var(--surface-alt);
+  border-bottom: 1px solid var(--border);
+`;
+
+const HeroInner = styled.div`
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: calc(var(--nav-height) + 40px) var(--page-gutter) 40px;
+`;
 
 const Page = styled.div`
   max-width: var(--content-max-width);
   margin: 0 auto;
-  padding: calc(var(--nav-height) + 40px) var(--page-gutter) 100px;
+  padding: 56px var(--page-gutter) 100px;
 `;
 
 const Breadcrumb = styled.nav`
   margin-bottom: 32px;
-  color: var(--text);
+  color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: var(--fz-xs);
 
   a {
-    color: var(--secondary);
+    color: var(--text-muted);
 
     &:hover {
-      color: var(--secondary);
-    }
-  }
-`;
-
-const MetaRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 20px;
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: var(--fz-xs);
-
-  .live {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-
-    span.dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--secondary);
+      color: var(--heading);
     }
   }
 `;
 
 const Title = styled.h1`
-  margin: 0 0 12px;
-  color: var(--heading);
+  margin: 28px 0 10px;
   font-size: clamp(32px, 5vw, 48px);
+  font-weight: 500;
 `;
 
 const Tagline = styled.p`
-  margin: 0 0 24px;
-  color: var(--secondary);
-  font-size: var(--fz-lg);
-`;
-
-const TechRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 32px;
-`;
-
-const TechTag = styled.span`
-  padding: 6px 12px;
-  border: 1px solid color-mix(in srgb, var(--secondary) 45%, var(--border));
-  border-radius: 999px;
-  color: var(--secondary);
+  margin: 0 0 32px;
+  color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: var(--fz-xxs);
+  font-size: var(--fz-md);
 `;
 
 const DemoButton = styled.a`
   ${({ theme }) => theme.mixins.bigButton};
-  display: inline-block;
-  margin-bottom: 48px;
-`;
-
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 48px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-`;
-
-const StatCard = styled.div`
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
-  background: var(--surface);
-
-  strong {
-    display: block;
-    margin-bottom: 6px;
-    color: var(--secondary);
-    font-family: var(--font-mono);
-    font-size: var(--fz-lg);
-  }
-
-  span {
-    color: var(--text);
-    font-size: var(--fz-xs);
-  }
+  display: inline-flex;
+  margin-top: 32px;
 `;
 
 const Block = styled.section`
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 
-  h2 {
-    margin-bottom: 16px;
-    color: var(--heading);
-    font-size: var(--fz-xl);
+  &:last-child {
+    margin-bottom: 0;
   }
 
   p {
@@ -141,62 +83,58 @@ const Block = styled.section`
       color: var(--text);
 
       &:before {
-        content: '▹';
+        content: '—';
         position: absolute;
         left: 0;
-        color: var(--secondary);
+        color: var(--text-muted);
       }
     }
   }
 `;
 
-const ArchGrid = styled.div`
-  display: grid;
-  gap: 16px;
+const ArchLog = styled.div`
+  border-top: 1px solid var(--border);
 `;
 
-const ArchCard = styled.div`
+const ArchRow = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 16px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
-  background: var(--surface);
+  grid-template-columns: 48px 1fr;
+  gap: 20px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border-soft);
 
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
+  .step {
+    font-family: var(--font-mono);
+    font-size: var(--fz-xs);
+    color: var(--text-muted);
+    padding-top: 3px;
   }
 
   h3 {
-    margin: 0 0 8px;
-    color: var(--secondary);
+    margin: 0 0 6px;
     font-size: var(--fz-md);
+    font-weight: 600;
   }
 
   p {
-    margin: 0;
+    margin: 0 0 10px;
     color: var(--text);
     font-size: var(--fz-sm);
   }
-`;
 
-const CodeBlock = styled.pre`
-  padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
-  background: var(--surface);
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: var(--fz-xs);
-  line-height: 1.6;
-  overflow-x: auto;
+  .tech {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--fz-xxs);
+  }
 `;
 
 const RelatedGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
@@ -205,21 +143,26 @@ const RelatedGrid = styled.div`
 
 const RelatedCard = styled(Link)`
   display: block;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
-  background: var(--surface);
+  padding: 24px;
+  background: var(--bg);
   text-decoration: none;
+  transition: var(--transition);
+
+  &:hover,
+  &:focus {
+    background: var(--surface);
+  }
 
   h3 {
     margin: 0 0 8px;
     color: var(--heading);
     font-size: var(--fz-md);
+    font-weight: 600;
   }
 
   p {
     margin: 0;
-    color: var(--text);
+    color: var(--text-muted);
     font-size: var(--fz-sm);
   }
 `;
@@ -235,54 +178,50 @@ const ProjectTemplate = ({ pageContext, location }) => {
 
   return (
     <Layout location={location}>
+      <HeroBand>
+        <HeroInner>
+          <Breadcrumb>
+            <Link to="/">Home</Link> &nbsp;›&nbsp; <Link to="/#projects">Projects</Link>{' '}
+            &nbsp;›&nbsp; {project.title}
+          </Breadcrumb>
+
+          <Title>{project.title}</Title>
+          <Tagline>{project.tagline}</Tagline>
+
+          <LedgerFields>
+            <FieldRow label="Status" value={project.status} status={project.status === 'Live'} />
+            <FieldRow label="Year" value={project.year} />
+            <FieldRow label="Category" value={project.category} />
+            <FieldRow label="Stack" value={project.tech.join(', ')} />
+            {project.metrics.map(m => (
+              <FieldRow key={m.label} label={m.label} value={m.value} />
+            ))}
+          </LedgerFields>
+
+          {project.external && (
+            <DemoButton href={project.external} target="_blank" rel="noreferrer">
+              View Live ↗
+            </DemoButton>
+          )}
+        </HeroInner>
+      </HeroBand>
+
       <Page>
-        <Breadcrumb>
-          <Link to="/">Home</Link> &nbsp;›&nbsp; <Link to="/#projects">Projects</Link> &nbsp;›&nbsp;{' '}
-          {project.title}
-        </Breadcrumb>
-
-        <MetaRow>
-          <span className="live">
-            <span className="dot" aria-hidden="true" />
-            {project.status}
-          </span>
-          <span>{project.year}</span>
-          <span>{project.category}</span>
-        </MetaRow>
-
-        <Title>{project.title}</Title>
-        <Tagline>{project.tagline}</Tagline>
-
-        <TechRow>
-          {project.tech.map(t => (
-            <TechTag key={t}>{t}</TechTag>
-          ))}
-        </TechRow>
-
-        {project.external && (
-          <DemoButton href={project.external} target="_blank" rel="noreferrer">
-            Live Demo ↗
-          </DemoButton>
-        )}
-
-        <StatsGrid>
-          {project.metrics.map(m => (
-            <StatCard key={m.label}>
-              <strong>{m.value}</strong>
-              <span>{m.label}</span>
-            </StatCard>
-          ))}
-        </StatsGrid>
-
         <Block>
-          <h2>Project Overview</h2>
+          <div className="ledger-heading">
+            <span className="eyebrow">Summary</span>
+            <h2 className="headline">Project Overview</h2>
+          </div>
           {project.overview.map(paragraph => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </Block>
 
         <Block>
-          <h2>Key Engineering Highlights</h2>
+          <div className="ledger-heading">
+            <span className="eyebrow">Notable</span>
+            <h2 className="headline">Key Engineering Highlights</h2>
+          </div>
           <ul>
             {project.highlights.map(item => (
               <li key={item}>{item}</li>
@@ -291,31 +230,46 @@ const ProjectTemplate = ({ pageContext, location }) => {
         </Block>
 
         <Block>
-          <h2>System Architecture</h2>
-          <ArchGrid>
-            {project.architecture.map(layer => (
-              <ArchCard key={layer.title}>
+          <div className="ledger-heading">
+            <span className="eyebrow">Request Flow</span>
+            <h2 className="headline">System Architecture</h2>
+          </div>
+          <ArchLog>
+            {project.architecture.map((layer, i) => (
+              <ArchRow key={layer.title}>
+                <span className="step">{String(i + 1).padStart(2, '0')}</span>
                 <div>
                   <h3>{layer.title}</h3>
                   <p>{layer.description}</p>
+                  <span className="tech">{layer.tech.join(' · ')}</span>
                 </div>
-                <TechRow>
-                  {layer.tech.map(t => (
-                    <TechTag key={t}>{t}</TechTag>
-                  ))}
-                </TechRow>
-              </ArchCard>
+              </ArchRow>
             ))}
-          </ArchGrid>
+          </ArchLog>
         </Block>
 
         <Block>
-          <h2>Full Tech Stack</h2>
-          <CodeBlock>{JSON.stringify(project.techStack, null, 2)}</CodeBlock>
+          <div className="ledger-heading">
+            <span className="eyebrow">Breakdown</span>
+            <h2 className="headline">Full Tech Stack</h2>
+          </div>
+          <LedgerFields>
+            {Object.entries(project.techStack).map(([category, items]) => (
+              <FieldRow
+                key={category}
+                label={category}
+                value={items.join(', ')}
+                labelWidth="140px"
+              />
+            ))}
+          </LedgerFields>
         </Block>
 
         <Block>
-          <h2>Related Projects</h2>
+          <div className="ledger-heading">
+            <span className="eyebrow">See Also</span>
+            <h2 className="headline">Related Projects</h2>
+          </div>
           <RelatedGrid>
             {related.map(r => (
               <RelatedCard key={r.slug} to={`/projects/${r.slug}`}>

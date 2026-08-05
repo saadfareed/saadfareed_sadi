@@ -36,7 +36,7 @@ const StyledHeader = styled.header`
       height: var(--nav-scroll-height);
       transform: translateY(0px);
       background-color: var(--nav-bg-scrolled);
-      box-shadow: 0 10px 30px -10px var(--navy-shadow);
+      box-shadow: 0 1px 0 var(--border);
     `};
 
   ${props =>
@@ -45,7 +45,7 @@ const StyledHeader = styled.header`
     css`
       height: var(--nav-scroll-height);
       transform: translateY(calc(var(--nav-scroll-height) * -1));
-      box-shadow: 0 10px 30px -10px var(--navy-shadow);
+      box-shadow: 0 1px 0 var(--border);
     `};
 
   @media (max-width: 768px) {
@@ -57,7 +57,7 @@ const StyledNav = styled.nav`
   ${({ theme }) => theme.mixins.flexBetween};
   position: relative;
   width: 100%;
-  color: var(--lightest-slate);
+  color: var(--heading);
   font-family: var(--font-mono);
   z-index: 12;
 
@@ -65,14 +65,14 @@ const StyledNav = styled.nav`
     ${({ theme }) => theme.mixins.flexCenter};
 
     a {
-      color: var(--green);
+      color: var(--heading);
       width: 42px;
       height: 42px;
 
       &:hover,
       &:focus {
         svg {
-          fill: var(--green-tint);
+          fill: var(--stamp);
         }
       }
 
@@ -183,7 +183,12 @@ const Nav = ({ isHome }) => {
           <TransitionGroup component={null}>
             {isMounted && (
               <CSSTransition classNames={fadeDownClass} timeout={timeout}>
-                <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms`, display: 'flex', alignItems: 'center' }}>
+                <div
+                  style={{
+                    transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms`,
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}>
                   <a href="/saadfareed_SSE.pdf" className="resume-button">
                     Resume
                   </a>

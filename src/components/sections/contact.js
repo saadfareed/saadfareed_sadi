@@ -48,7 +48,6 @@ const StyledContactInner = styled.div`
 const FormCard = styled.form`
   padding: 32px;
   border: 1px solid var(--border);
-  border-radius: var(--card-radius);
   background: var(--surface);
 
   h3 {
@@ -60,7 +59,7 @@ const FormCard = styled.form`
   label {
     display: block;
     margin-bottom: 8px;
-    color: var(--text);
+    color: var(--text-muted);
     font-family: var(--font-mono);
     font-size: var(--fz-xxs);
     letter-spacing: 0.08em;
@@ -77,7 +76,6 @@ const FormCard = styled.form`
     width: 100%;
     padding: 14px 16px;
     border: 1px solid var(--border);
-    border-radius: var(--border-radius);
     background: var(--bg);
     color: var(--heading);
     font-family: var(--font-sans);
@@ -85,12 +83,12 @@ const FormCard = styled.form`
     transition: var(--transition);
 
     &:focus {
-      border-color: var(--brand);
+      border-color: var(--stamp);
       outline: 0;
     }
 
     &::placeholder {
-      color: color-mix(in srgb, var(--text) 70%, transparent);
+      color: var(--text-muted);
     }
   }
 
@@ -103,13 +101,14 @@ const FormCard = styled.form`
     ${({ theme }) => theme.mixins.bigButton};
     width: 100%;
     margin-top: 8px;
+    justify-content: center;
     border: none;
     cursor: pointer;
   }
 
   .disclaimer {
     margin: 16px 0 0;
-    color: var(--text);
+    color: var(--text-muted);
     font-size: var(--fz-xs);
     text-align: center;
   }
@@ -146,15 +145,19 @@ const Contact = () => {
   return (
     <StyledContactSection id="contact" ref={revealContainer}>
       <StyledContactInner>
-        <h2 className="numbered-heading">Get In Touch</h2>
+        <div className="ledger-heading">
+          <span className="eyebrow">Correspondence</span>
+          <h2 className="headline">Get In Touch</h2>
+        </div>
 
         <div className="contact-layout">
           <div>
             <Prose>
               <p>
-                I&apos;m open to senior backend and platform engineering roles, consulting engagements, and
-                challenging distributed systems problems. Whether you&apos;re scaling payments, migrating to
-                microservices, or building high-throughput pipelines — let&apos;s talk.
+                I&apos;m open to senior backend and platform engineering roles, consulting
+                engagements, and challenging distributed systems problems. Whether you&apos;re
+                scaling payments, migrating to microservices, or building high-throughput pipelines
+                — let&apos;s talk.
               </p>
             </Prose>
 

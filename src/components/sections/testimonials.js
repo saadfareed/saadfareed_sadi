@@ -19,14 +19,6 @@ const getVisibleCount = () => {
   return 3;
 };
 
-const getInitials = name =>
-  name
-    .split(' ')
-    .map(part => part[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
-
 const StyledTestimonialsSection = styled(Section)`
   width: 100%;
 `;
@@ -35,9 +27,7 @@ const TestimonialsShell = styled.div`
   margin-top: 8px;
   padding: clamp(20px, 4vw, 32px);
   border: 1px solid var(--border);
-  border-radius: var(--card-radius);
   background: var(--surface);
-  box-shadow: 0 10px 30px -20px var(--shadow);
 `;
 
 const CarouselHeader = styled.div`
@@ -51,18 +41,33 @@ const CarouselHeader = styled.div`
 
 const CarouselLabel = styled.p`
   margin: 0;
-  color: var(--text);
+  color: var(--heading);
   font-family: var(--font-mono);
   font-size: var(--fz-xs);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 `;
 
-const CarouselHint = styled.span`
-  color: var(--text);
+const ConfidentialityNote = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: var(--fz-xxs);
-  opacity: 0.75;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+`;
+
+const CarouselHint = styled.span`
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--fz-xxs);
 `;
 
 const DotNav = styled.div`
@@ -72,19 +77,20 @@ const DotNav = styled.div`
 `;
 
 const DotButton = styled.button`
-  width: ${({ $active }) => ($active ? '28px' : '8px')};
-  height: 8px;
+  width: ${({ $active }) => ($active ? '26px' : '7px')};
+  height: 7px;
   padding: 0;
   border: none;
   border-radius: 999px;
-  background: ${({ $active }) =>
-    $active ? 'var(--brand)' : 'color-mix(in srgb, var(--text) 25%, transparent)'};
+  background: ${({ $active }) => ($active ? 'var(--stamp)' : 'var(--border)')};
   cursor: pointer;
-  transition: width 0.3s var(--easing), background 0.3s var(--easing);
+  transition:
+    width 0.3s var(--easing),
+    background 0.3s var(--easing);
 
   &:hover,
   &:focus {
-    background: var(--brand);
+    background: var(--stamp);
     outline: 0;
   }
 `;
@@ -111,21 +117,18 @@ const CarouselSlide = styled.div`
 `;
 
 const TestimonialCard = styled.blockquote`
-  ${({ theme }) => theme.mixins.boxShadow};
   display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 280px;
   margin: 0;
   padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
+  border: 1px solid var(--border-soft);
   background: var(--bg);
-  transition: transform 0.35s var(--easing), border-color 0.35s var(--easing);
+  transition: border-color 0.35s var(--easing);
 
   &:hover {
-    transform: translateY(-3px);
-    border-color: color-mix(in srgb, var(--brand) 45%, var(--border));
+    border-color: var(--stamp);
   }
 `;
 
@@ -133,31 +136,26 @@ const CardTop = styled.div`
   ${({ theme }) => theme.mixins.flexBetween};
   align-items: flex-start;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 `;
 
-const QuoteIcon = styled.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--brand) 16%, transparent);
-  color: var(--brand);
-  font-family: Georgia, serif;
-  font-size: 28px;
-  line-height: 1;
+const QuoteMark = styled.span`
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 0.6;
+  color: var(--text-muted);
 `;
 
-const CompanyBadge = styled.span`
-  padding: 6px 12px;
-  border: 1px solid color-mix(in srgb, var(--brand) 40%, var(--border));
-  border-radius: 999px;
-  color: var(--secondary);
+const CompanyLabel = styled.span`
+  color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: var(--fz-xxs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   white-space: nowrap;
+  padding-top: 8px;
 `;
 
 const QuoteText = styled.p`
@@ -172,7 +170,7 @@ const QuoteText = styled.p`
 const CardDivider = styled.div`
   height: 1px;
   margin: 24px 0 20px;
-  background: var(--border);
+  background: var(--border-soft);
 `;
 
 const AuthorRow = styled.footer`
@@ -184,14 +182,16 @@ const AuthorRow = styled.footer`
 const Avatar = styled.span`
   ${({ theme }) => theme.mixins.flexCenter};
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--brand) 22%, var(--surface));
-  color: var(--heading);
-  font-family: var(--font-mono);
-  font-size: var(--fz-xs);
-  font-weight: 600;
+  background: var(--surface-alt);
+  color: var(--text-muted);
+
+  svg {
+    width: 17px;
+    height: 17px;
+  }
 `;
 
 const AuthorMeta = styled.div`
@@ -207,7 +207,7 @@ const AuthorMeta = styled.div`
   }
 
   span {
-    color: var(--text);
+    color: var(--text-muted);
     font-family: var(--font-mono);
     font-size: var(--fz-xxs);
     line-height: 1.4;
@@ -285,9 +285,13 @@ const Testimonials = () => {
 
   return (
     <StyledTestimonialsSection id="testimonials" ref={revealContainer}>
-      <h2 className="numbered-heading">What Clients &amp; Colleagues Say</h2>
+      <div className="ledger-heading">
+        <span className="eyebrow">References</span>
+        <h2 className="headline">What Clients &amp; Colleagues Say</h2>
+      </div>
       <p className="section-intro">
-        Feedback from engineering leaders and collaborators across payments, platform, and distributed systems work.
+        Feedback from engineering leaders and collaborators across payments, platform, and
+        distributed systems work.
       </p>
 
       <TestimonialsShell
@@ -298,7 +302,23 @@ const Testimonials = () => {
         <CarouselHeader>
           <div>
             <CarouselLabel>Testimonials</CarouselLabel>
-            <CarouselHint>{isPaused ? 'Paused · hover to read' : 'Auto-advancing carousel'}</CarouselHint>
+            <CarouselHint>
+              {isPaused ? 'Paused · hover to read' : 'Auto-advancing carousel'}
+            </CarouselHint>
+            <ConfidentialityNote>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              Names withheld to protect confidentiality — shared with permission
+            </ConfidentialityNote>
           </div>
 
           <DotNav aria-label="Testimonial slides">
@@ -324,8 +344,8 @@ const Testimonials = () => {
               <CarouselSlide key={`${name}-${company}-${index}`} $slideWidth={slideWidth}>
                 <TestimonialCard cite={company}>
                   <CardTop>
-                    <QuoteIcon aria-hidden="true">&ldquo;</QuoteIcon>
-                    <CompanyBadge>{company}</CompanyBadge>
+                    <QuoteMark aria-hidden="true">&ldquo;</QuoteMark>
+                    <CompanyLabel>{company}</CompanyLabel>
                   </CardTop>
 
                   <QuoteText>{quote}</QuoteText>
@@ -333,7 +353,18 @@ const Testimonials = () => {
                   <CardDivider />
 
                   <AuthorRow>
-                    <Avatar aria-hidden="true">{getInitials(name)}</Avatar>
+                    <Avatar aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                      </svg>
+                    </Avatar>
                     <AuthorMeta>
                       <strong>{name}</strong>
                       <span>{role}</span>

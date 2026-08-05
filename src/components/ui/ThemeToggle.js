@@ -11,7 +11,7 @@ const StyledToggle = styled.button`
   border: 1px solid var(--border);
   border-radius: var(--border-radius);
   background-color: transparent;
-  color: var(--secondary);
+  color: var(--text-muted);
   transition: var(--transition);
 
   svg {
@@ -21,7 +21,8 @@ const StyledToggle = styled.button`
 
   &:hover,
   &:focus {
-    background-color: var(--secondary-soft);
+    background-color: var(--surface);
+    color: var(--heading);
     outline: 0;
   }
 

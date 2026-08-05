@@ -11,7 +11,7 @@ const StyledSideElement = styled.div`
   left: ${props => (props.orientation === 'left' ? 'var(--page-gutter)' : 'auto')};
   right: ${props => (props.orientation === 'left' ? 'auto' : 'var(--page-gutter)')};
   z-index: 10;
-  color: var(--light-slate);
+  color: var(--text-muted);
 
   @media (max-width: 768px) {
     display: none;

@@ -4,6 +4,9 @@ const testimonials = require('./data/testimonials');
 module.exports = {
   email: 'saadfareedsadi@gmail.com',
   resume: '/saadfareed_SSE.pdf',
+  // Paste a Loom share URL here (e.g. https://www.loom.com/share/xxxxxxxx) to
+  // show a short video intro in the About section. Leave empty to hide it.
+  introVideoUrl: '',
   github: 'https://github.com/saadfareed',
   linkedin: 'https://www.linkedin.com/in/saad-fareed',
 
@@ -19,12 +22,7 @@ module.exports = {
     { name: 'Contact', url: '/#contact' },
   ],
 
-  heroKeywords: ['Python', 'Django', 'FastAPI', 'Node', 'React', 'Next'],
-
-  colors: {
-    primary: '#0a192f',
-    secondary: '#64ffda',
-  },
+  heroKeywords: ['Python', 'Django', 'FastAPI', 'Node.js', 'PostgreSQL', 'AWS'],
 
   featuredProjects,
   testimonials,

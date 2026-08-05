@@ -14,14 +14,14 @@ const StyledLoader = styled.div`
   right: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--dark-navy);
+  background-color: var(--bg);
   z-index: 99;
 
   .logo-wrapper {
     width: max-content;
     max-width: 100px;
     transition: var(--transition);
-    opacity: ${props => (props.isMounted ? 1 : 0)};
+    opacity: ${props => (props.$isMounted ? 1 : 0)};
     svg {
       display: block;
       width: 100%;
@@ -36,10 +36,33 @@ const StyledLoader = styled.div`
   }
 `;
 
+// Hard ceiling on how long the intro can hold the real page hidden. If anime.js
+// never fires its `complete` callback (blocked script, slow device, a future
+// dependency bump), this guarantees the site still becomes visible/interactive.
+const MAX_LOADER_MS = 2600;
+
 const Loader = ({ finishLoading }) => {
-  const animate = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      finishLoading();
+      return undefined;
+    }
+
+    const mountTimeout = setTimeout(() => setIsMounted(true), 10);
+    const safetyTimeout = setTimeout(finishLoading, MAX_LOADER_MS);
+
     const loader = anime.timeline({
-      complete: () => finishLoading(),
+      complete: () => {
+        clearTimeout(safetyTimeout);
+        finishLoading();
+      },
     });
 
     loader
@@ -71,18 +94,15 @@ const Loader = ({ finishLoading }) => {
         opacity: 0,
         zIndex: -1,
       });
-  };
 
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setIsMounted(true), 10);
-    animate();
-    return () => clearTimeout(timeout);
-  }, []);
+    return () => {
+      clearTimeout(mountTimeout);
+      clearTimeout(safetyTimeout);
+    };
+  }, [finishLoading]);
 
   return (
-    <StyledLoader className="loader" isMounted={isMounted}>
+    <StyledLoader className="loader" $isMounted={isMounted}>
       <Helmet bodyAttributes={{ class: `hidden` }} />
 
       <div className="logo-wrapper">

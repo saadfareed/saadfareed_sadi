@@ -1,43 +1,36 @@
 import { css } from 'styled-components';
 
-const lightButtonHover = css`
-  [data-theme='light'] & {
-    border-color: #0a192f;
-    color: #0a192f;
-
-    &:hover,
-    &:focus,
-    &:active {
-      background-color: #0a192f;
-      color: #ffffff;
-    }
-  }
-`;
-
+// The primary "stamp" interaction: an outlined ink rectangle that fills
+// solid on hover/focus, like a rubber stamp being pressed onto paper.
 const button = css`
-  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--heading);
   background-color: transparent;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--heading);
   border-radius: var(--border-radius);
-  font-size: var(--fz-xs);
   font-family: var(--font-mono);
+  font-size: var(--fz-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   line-height: 1;
   text-decoration: none;
   cursor: pointer;
   transition: var(--transition);
-  padding: 1.25rem 1.75rem;
+  padding: 1.1rem 1.7rem;
 
   &:hover,
   &:focus,
   &:active {
-    background-color: var(--secondary-soft);
+    background-color: var(--heading);
+    color: var(--bg);
     outline: none;
   }
   &:after {
     display: none !important;
   }
-
-  ${lightButtonHover};
 `;
 
 const mixins = {
@@ -64,17 +57,13 @@ const mixins = {
     &:hover,
     &:active,
     &:focus {
-      color: var(--accent);
+      color: var(--heading);
       outline: 0;
-    }
-
-    [data-theme='light'] &:hover,
-    [data-theme='light'] &:active,
-    [data-theme='light'] &:focus {
-      color: #0a192f;
     }
   `,
 
+  // Body-copy links: a quiet rule underneath that strengthens and turns
+  // stamp-red on hover — the one place the accent shows up in running text.
   inlineLink: css`
     display: inline-block;
     text-decoration: none;
@@ -82,101 +71,60 @@ const mixins = {
     position: relative;
     transition: var(--transition);
     cursor: pointer;
-    color: var(--accent);
+    color: var(--heading);
     &:hover,
     &:focus,
     &:active {
-      color: var(--accent);
+      color: var(--heading);
       outline: 0;
       &:after {
         width: 100%;
-      }
-      & > * {
-        color: var(--secondary) !important;
-        transition: var(--transition);
+        background-color: var(--stamp);
       }
     }
     &:after {
       content: '';
       display: block;
-      width: 0;
+      width: 100%;
       height: 1px;
       position: relative;
-      bottom: 0.37em;
-      background-color: var(--accent);
+      bottom: 0.15em;
+      background-color: var(--border);
       transition: var(--transition);
-      opacity: 0.5;
-    }
-
-    [data-theme='light'] & {
-      color: #0a192f;
-
-      &:after {
-        background-color: #0a192f;
-      }
     }
   `,
 
   button,
 
   smallButton: css`
-    color: var(--accent);
-    background-color: transparent;
-    border: 1px solid var(--brand);
-    border-radius: var(--border-radius);
-    padding: 0.75rem 1rem;
-    font-size: var(--fz-xs);
-    font-family: var(--font-mono);
-    line-height: 1;
-    text-decoration: none;
-    cursor: pointer;
-    transition: var(--transition);
-    &:hover,
-    &:focus,
-    &:active {
-      background-color: var(--secondary-soft);
-    }
-    &:after {
-      display: none !important;
-    }
-
-    ${lightButtonHover};
+    ${button};
+    padding: 0.7rem 1.1rem;
   `,
 
   bigButton: css`
-    color: var(--accent);
-    background-color: transparent;
-    border: 1px solid var(--brand);
-    border-radius: var(--border-radius);
-    padding: 1.25rem 1.75rem;
+    ${button};
+    padding: 1.25rem 1.85rem;
     font-size: var(--fz-sm);
-    font-family: var(--font-mono);
-    line-height: 1;
-    text-decoration: none;
-    cursor: pointer;
-    transition: var(--transition);
-    &:hover,
-    &:focus,
-    &:active {
-      background-color: var(--secondary-soft);
-    }
-    &:after {
-      display: none !important;
-    }
-
-    ${lightButtonHover};
   `,
 
+  // Small in-card CTAs ("Case Study →", "Live ↗") — a plain underlined
+  // mono label rather than another boxed button, so the outlined "stamp"
+  // treatment above stays reserved for the one or two calls to action that
+  // should carry real weight.
   fillButton: css`
-    display: inline-block;
-    padding: 10px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
     border: none;
-    border-radius: var(--border-radius);
-    background-color: #64ffda;
-    color: #0a192f;
+    border-bottom: 1px solid var(--border);
+    background-color: transparent;
+    color: var(--heading);
     font-family: var(--font-mono);
     font-size: var(--fz-xs);
-    line-height: 1;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
     text-decoration: none;
     cursor: pointer;
     transition: var(--transition);
@@ -184,21 +132,15 @@ const mixins = {
     &:hover,
     &:focus,
     &:active {
-      background-color: #64ffda;
-      color: #0a192f;
-      filter: brightness(0.92);
+      border-bottom-color: var(--stamp);
+      color: var(--stamp);
       outline: 0;
     }
   `,
 
   boxShadow: css`
-    box-shadow: 0 10px 30px -15px var(--shadow);
+    box-shadow: 0 1px 0 var(--border);
     transition: var(--transition);
-
-    &:hover,
-    &:focus {
-      box-shadow: 0 20px 30px -15px var(--shadow);
-    }
   `,
 
   fancyList: css`
@@ -208,13 +150,13 @@ const mixins = {
     font-size: var(--fz-lg);
     li {
       position: relative;
-      padding-left: 30px;
+      padding-left: 26px;
       margin-bottom: 10px;
       &:before {
-        content: '▹';
+        content: '—';
         position: absolute;
         left: 0;
-        color: var(--accent);
+        color: var(--text-muted);
       }
     }
   `,

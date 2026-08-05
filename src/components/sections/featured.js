@@ -6,17 +6,17 @@ import {
   Section,
   CardsGrid,
   ProjectCard,
-  CardHeader,
+  CardMeta,
   StatusLink,
   StatusBadge,
   Year,
+  CardBody,
   CardTitle,
   CardTagline,
   CardDescription,
-  MetricsGrid,
+  MetricsRow,
   Metric,
-  TechList,
-  TechTag,
+  TechLine,
   CardFooter,
   CardActionLink,
   CardActionExternal,
@@ -40,16 +40,19 @@ const Featured = () => {
 
   return (
     <StyledFeaturedSection id="projects" ref={revealContainer}>
-      <h2 className="numbered-heading">Projects</h2>
+      <div className="ledger-heading">
+        <span className="eyebrow">Selected Work</span>
+        <h2 className="headline">Projects</h2>
+      </div>
       <p className="section-intro">
-        Production work and case studies from high-throughput backend systems, payment platforms, and
-        microservices migrations.
+        Production work and case studies from high-throughput backend systems, payment platforms,
+        and microservices migrations.
       </p>
 
       <CardsGrid>
         {featuredProjects.map((project, i) => (
           <ProjectCard key={project.slug} ref={el => (revealCards.current[i] = el)}>
-            <CardHeader>
+            <CardMeta>
               {project.external ? (
                 <StatusLink href={project.external} target="_blank" rel="noreferrer">
                   <span className="dot" aria-hidden="true" />
@@ -62,35 +65,33 @@ const Featured = () => {
                 </StatusBadge>
               )}
               <Year>{project.year}</Year>
-            </CardHeader>
+            </CardMeta>
 
-            <CardTitle>{project.title}</CardTitle>
-            <CardTagline>{project.tagline}</CardTagline>
-            <CardDescription>{project.description}</CardDescription>
+            <CardBody>
+              <CardTitle>{project.title}</CardTitle>
+              <CardTagline>{project.tagline}</CardTagline>
+              <CardDescription>{project.description}</CardDescription>
 
-            <MetricsGrid>
-              {project.metrics.map(metric => (
-                <Metric key={metric.label}>
-                  <strong>{metric.value}</strong>
-                  <span>{metric.label}</span>
-                </Metric>
-              ))}
-            </MetricsGrid>
+              <MetricsRow>
+                {project.metrics.map(metric => (
+                  <Metric key={metric.label}>
+                    <strong>{metric.value}</strong>
+                    <span>{metric.label}</span>
+                  </Metric>
+                ))}
+              </MetricsRow>
 
-            <TechList>
-              {project.tech.map(item => (
-                <TechTag key={item}>{item}</TechTag>
-              ))}
-            </TechList>
+              <TechLine>{project.tech.join(' · ')}</TechLine>
 
-            <CardFooter>
-              <CardActionLink to={`/projects/${project.slug}`}>Case Study →</CardActionLink>
-              {project.external && (
-                <CardActionExternal href={project.external} target="_blank" rel="noreferrer">
-                  Live ↗
-                </CardActionExternal>
-              )}
-            </CardFooter>
+              <CardFooter>
+                <CardActionLink to={`/projects/${project.slug}`}>Case Study →</CardActionLink>
+                {project.external && (
+                  <CardActionExternal href={project.external} target="_blank" rel="noreferrer">
+                    Live ↗
+                  </CardActionExternal>
+                )}
+              </CardFooter>
+            </CardBody>
           </ProjectCard>
         ))}
       </CardsGrid>
