@@ -8,6 +8,18 @@ import sr from '@utils/sr';
 import { Section } from '@components/ui';
 
 const StyledJobsSection = styled(Section)`
+  .register {
+    padding: clamp(20px, 4vw, 40px);
+    border: 1px solid var(--border);
+    background: var(--surface);
+
+    @media (max-width: 600px) {
+      padding: 0;
+      border: none;
+      background: none;
+    }
+  }
+
   .inner {
     display: flex;
     gap: 20px;
@@ -65,11 +77,12 @@ const StyledTabButton = styled.button`
   width: 100%;
   height: var(--tab-height);
   padding: 0 20px 2px;
-  border-left: 2px solid var(--lightest-navy);
+  border-left: 2px solid var(--border-soft);
   background-color: transparent;
-  color: ${({ isActive }) => (isActive ? 'var(--green)' : 'var(--slate)')};
+  color: ${({ isActive }) => (isActive ? 'var(--heading)' : 'var(--text-muted)')};
   font-family: var(--font-mono);
   font-size: var(--fz-xs);
+  font-weight: ${({ isActive }) => (isActive ? 600 : 400)};
   text-align: left;
   white-space: nowrap;
 
@@ -81,13 +94,14 @@ const StyledTabButton = styled.button`
     min-width: 120px;
     padding: 0 15px;
     border-left: 0;
-    border-bottom: 2px solid var(--lightest-navy);
+    border-bottom: 2px solid var(--border-soft);
     text-align: center;
   }
 
   &:hover,
   &:focus {
-    background-color: var(--light-navy);
+    background-color: var(--surface-alt);
+    color: var(--heading);
   }
 `;
 
@@ -98,8 +112,7 @@ const StyledHighlight = styled.div`
   z-index: 10;
   width: 2px;
   height: var(--tab-height);
-  border-radius: var(--border-radius);
-  background: var(--green);
+  background: var(--stamp);
   transform: translateY(calc(${({ activeTabId }) => activeTabId} * var(--tab-height)));
   transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   transition-delay: 0.1s;
@@ -148,13 +161,16 @@ const StyledTabContent = styled.div`
     font-weight: 500;
 
     .company {
-      color: var(--green);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: var(--fz-lg);
+      font-weight: 400;
     }
   }
 
   .range {
     margin-bottom: 30px;
-    color: var(--light-slate);
+    color: var(--text-muted);
     font-family: var(--font-mono);
     font-size: var(--fz-xs);
   }
@@ -165,7 +181,7 @@ const Jobs = () => {
     query JobsSectionQuery {
       jobs: allMarkdownRemark(
         filter: { fileAbsolutePath: { regex: "/jobs/" } }
-        sort: {frontmatter: {date: DESC}}
+        sort: { frontmatter: { date: DESC } }
       ) {
         edges {
           node {
@@ -227,9 +243,12 @@ const Jobs = () => {
 
   return (
     <StyledJobsSection id="jobs" ref={revealContainer}>
-      <h2 className="numbered-heading">Where I’ve Worked</h2>
+      <div className="ledger-heading">
+        <span className="eyebrow">Employment History</span>
+        <h2 className="headline">Where I&rsquo;ve Worked</h2>
+      </div>
 
-      <div className="inner">
+      <div className="register inner">
         <StyledTabList role="tablist" aria-label="Job tabs" onKeyDown={onKeyDown}>
           {jobsData &&
             jobsData.map(({ node }, i) => {

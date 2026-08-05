@@ -14,10 +14,6 @@ const StyledMainContainer = styled.main`
     width: 100%;
     max-width: var(--content-max-width);
   }
-
-  > section:first-of-type {
-    padding-top: 0;
-  }
 `;
 
 const IndexPage = ({ location }) => (

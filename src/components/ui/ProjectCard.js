@@ -1,98 +1,96 @@
 import styled from 'styled-components';
 import { Link } from 'gatsby';
 
+// A single-column ledger of entries rather than a card grid — each project
+// is a ruled row (date/status column + body), like line items on a
+// statement, instead of a floating shadowed card.
 export const CardsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-
-  @media (max-width: 960px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-  }
 `;
 
 export const ProjectCard = styled.article`
-  ${({ theme }) => theme.mixins.boxShadow};
   display: grid;
-  grid-template-rows: auto auto auto 1fr auto auto auto;
-  min-height: 100%;
-  padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
-  background-color: var(--surface);
-  transition: transform 0.35s var(--easing), box-shadow 0.35s var(--easing);
+  grid-template-columns: 100px 1fr;
+  gap: 28px;
+  padding: 32px 0;
+  border-top: 1px solid var(--border-soft);
 
-  &:hover {
-    transform: translateY(-4px);
+  &:first-child {
+    border-top: none;
+    padding-top: 4px;
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 `;
 
-export const CardHeader = styled.div`
-  ${({ theme }) => theme.mixins.flexBetween};
-  margin-bottom: 20px;
+export const CardMeta = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fz-xs);
+  color: var(--text-muted);
+
+  @media (max-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
 `;
 
-export const StatusLink = styled.a`
+const statusRow = `
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--heading);
-  font-family: var(--font-mono);
-  font-size: var(--fz-xs);
-  text-decoration: none;
+  color: var(--text-muted);
 
   span.dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background-color: var(--brand);
+    background-color: var(--stamp);
+    flex-shrink: 0;
   }
+`;
+
+export const StatusLink = styled.a`
+  ${statusRow};
+  text-decoration: none;
 
   &:hover,
   &:focus {
-    color: var(--secondary);
+    color: var(--heading);
   }
 `;
 
 export const StatusBadge = styled.div`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--heading);
-  font-family: var(--font-mono);
-  font-size: var(--fz-xs);
-
-  span.dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--brand);
-  }
+  ${statusRow};
 `;
 
-export const Year = styled.span`
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: var(--fz-xs);
+export const Year = styled.span``;
+
+export const CardBody = styled.div`
+  min-width: 0;
 `;
 
 export const CardTitle = styled.h3`
-  margin: 0 0 8px;
-  color: var(--heading);
-  font-size: clamp(18px, 2.5vw, 22px);
+  margin: 0 0 4px;
+  font-size: clamp(19px, 2.5vw, 23px);
+  font-weight: 500;
   line-height: 1.2;
 `;
 
 export const CardTagline = styled.p`
-  margin: 0 0 16px;
-  color: var(--secondary);
-  font-size: var(--fz-sm);
-  line-height: 1.4;
+  margin: 0 0 14px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--fz-xs);
+  letter-spacing: 0.02em;
 `;
 
 export const CardDescription = styled.p`
@@ -102,55 +100,41 @@ export const CardDescription = styled.p`
   line-height: var(--text-line-height);
 `;
 
-export const MetricsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 20px;
-  padding: 16px 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+export const MetricsRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin: 20px 0;
 `;
 
 export const Metric = styled.div`
   strong {
     display: block;
-    margin-bottom: 4px;
-    color: var(--secondary);
+    color: var(--heading);
     font-family: var(--font-mono);
     font-size: var(--fz-md);
     font-weight: 600;
   }
 
   span {
-    color: var(--text);
-    font-size: var(--fz-xs);
-    line-height: 1.4;
+    color: var(--text-muted);
+    font-size: var(--fz-xxs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 `;
 
-export const TechList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 20px;
-`;
-
-export const TechTag = styled.span`
-  padding: 6px 12px;
-  border: 1px solid color-mix(in srgb, var(--brand) 45%, var(--border));
-  border-radius: 999px;
-  color: var(--secondary);
+export const TechLine = styled.p`
+  margin: 0 0 18px;
+  color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: var(--fz-xxs);
-  line-height: 1;
+  font-size: var(--fz-xs);
 `;
 
 export const CardFooter = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 24px;
 `;
 
 export const CardActionLink = styled(Link)`

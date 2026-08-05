@@ -7,11 +7,17 @@ const GlobalStyle = createGlobalStyle`
   ${Fonts};
 
   :root {
-    --primary: #0a192f;
-    --secondary: #64ffda;
-    --brand: #64ffda;
-    --font-sans: 'Calibre', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif;
-    --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+    /*
+     * Ledger / Statement of Record — the whole site reads as a financial
+     * ledger: ruled rows, tabular figures, a single "stamp" accent used the
+     * way a rubber stamp is used on a real document (sparingly, for the
+     * things that matter: status, key figures, one call to action). Almost
+     * everything else is differentiated by ink weight and rule structure,
+     * not color.
+     */
+    --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --font-sans: 'IBM Plex Sans', -apple-system, system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
 
     --fz-xxs: 12px;
     --fz-xs: 13px;
@@ -22,10 +28,10 @@ const GlobalStyle = createGlobalStyle`
     --fz-xxl: 22px;
     --fz-heading: 32px;
 
-    --border-radius: 4px;
-    --card-radius: 12px;
-    --nav-height: 100px;
-    --nav-scroll-height: 70px;
+    --border-radius: 2px;
+    --card-radius: 3px;
+    --nav-height: 96px;
+    --nav-scroll-height: 68px;
 
     --tab-height: 42px;
     --tab-width: 120px;
@@ -49,58 +55,45 @@ const GlobalStyle = createGlobalStyle`
     --ham-after-active: bottom 0.1s ease-out, transform 0.22s cubic-bezier(0.215, 0.61, 0.355, 1) 0.12s;
   }
 
+  /*
+   * Day Ledger (light, default): pale sage ledger paper with a greenbar
+   * (alternating accounting-paper stripe) for rows/cards. Night Audit
+   * (dark): the same statement read on a CRT at close-of-day — deep ink
+   * background, paper-pale text, the stamp brightened for legibility.
+   */
   :root,
-  [data-theme='dark'] {
-    --bg: var(--primary);
-    --surface: color-mix(in srgb, var(--secondary) 7%, var(--primary));
-    --border: color-mix(in srgb, var(--secondary) 20%, var(--primary));
-    --text: color-mix(in srgb, var(--secondary) 72%, var(--primary));
-    --heading: var(--secondary);
-    --secondary-soft: color-mix(in srgb, var(--secondary) 12%, transparent);
-    --shadow: color-mix(in srgb, var(--primary) 55%, transparent);
-    --nav-bg: color-mix(in srgb, var(--primary) 94%, transparent);
-    --nav-bg-scrolled: color-mix(in srgb, var(--primary) 88%, transparent);
-    --image-overlay: var(--primary);
-    --accent: var(--secondary);
-    color-scheme: dark;
-  }
-
   [data-theme='light'] {
-    --bg: #ffffff;
-    --surface: #f4f6f8;
-    --border: #0a192f;
-    --text: #0a192f;
-    --heading: #0a192f;
-    --secondary: #0a192f;
-    --brand: #64ffda;
-    --secondary-soft: color-mix(in srgb, #0a192f 12%, transparent);
-    --shadow: color-mix(in srgb, var(--primary) 8%, transparent);
-    --nav-bg: color-mix(in srgb, #ffffff 88%, transparent);
-    --nav-bg-scrolled: color-mix(in srgb, #ffffff 94%, transparent);
-    --image-overlay: #ffffff;
-    --accent: #0a192f;
+    --bg: #f7f8f3;
+    --surface: #e8efe1;
+    --surface-alt: #f1f4ec;
+    --border: #8fa087;
+    --border-soft: color-mix(in srgb, var(--border) 35%, var(--bg));
+    --heading: #14231c;
+    --text: #3d4f42;
+    --text-muted: #5c6c60;
+    --stamp: #b23a2c;
+    --stamp-soft: color-mix(in srgb, var(--stamp) 12%, transparent);
+    --shadow: color-mix(in srgb, var(--heading) 12%, transparent);
+    --nav-bg: color-mix(in srgb, var(--bg) 90%, transparent);
+    --nav-bg-scrolled: color-mix(in srgb, var(--bg) 96%, transparent);
     color-scheme: light;
   }
 
-  [data-theme='light'] .profile-photo .wrapper:before {
-    mix-blend-mode: normal;
-    opacity: 0.1;
-  }
-
-  :root,
-  [data-theme='dark'],
-  [data-theme='light'] {
-    --green: var(--accent);
-    --green-tint: var(--secondary-soft);
-    --navy: var(--bg);
-    --light-navy: var(--surface);
-    --lightest-navy: var(--border);
-    --slate: var(--text);
-    --light-slate: var(--text);
-    --lightest-slate: var(--heading);
-    --white: var(--heading);
-    --surface-elevated: var(--surface);
-    --navy-shadow: var(--shadow);
+  [data-theme='dark'] {
+    --bg: #0e1912;
+    --surface: #16241b;
+    --surface-alt: #111e15;
+    --border: #42603c;
+    --border-soft: color-mix(in srgb, var(--border) 35%, var(--bg));
+    --heading: #ecf3e6;
+    --text: #a9bba9;
+    --text-muted: #7c8e7e;
+    --stamp: #e2664a;
+    --stamp-soft: color-mix(in srgb, var(--stamp) 14%, transparent);
+    --shadow: color-mix(in srgb, black 45%, transparent);
+    --nav-bg: color-mix(in srgb, var(--bg) 88%, transparent);
+    --nav-bg-scrolled: color-mix(in srgb, var(--bg) 95%, transparent);
+    color-scheme: dark;
   }
 
   html {
@@ -130,7 +123,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::selection {
-    background-color: color-mix(in srgb, var(--secondary) 35%, var(--primary));
+    background-color: var(--stamp-soft);
     color: var(--heading);
   }
 
@@ -144,12 +137,13 @@ const GlobalStyle = createGlobalStyle`
     background-color: var(--bg);
     color: var(--text);
     font-family: var(--font-sans);
-    font-size: var(--fz-xl);
+    font-size: var(--fz-lg);
+    font-variant-numeric: tabular-nums;
     line-height: var(--text-line-height);
     transition: background-color 0.25s ease, color 0.25s ease;
 
     @media (max-width: 480px) {
-      font-size: var(--fz-lg);
+      font-size: var(--fz-md);
     }
 
     &.hidden {
@@ -244,6 +238,7 @@ const GlobalStyle = createGlobalStyle`
   h6 {
     margin: 0;
     padding: 0;
+    font-family: var(--font-display);
     font-weight: 600;
     color: var(--heading);
     line-height: 1.1;
@@ -252,44 +247,50 @@ const GlobalStyle = createGlobalStyle`
   .big-heading {
     margin: 0;
     padding: 0;
-    font-size: clamp(40px, 8vw, 80px);
+    font-weight: 500;
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 1.04;
   }
 
   .medium-heading {
     margin: 0;
     padding: 0;
-    font-size: clamp(40px, 8vw, 60px);
+    font-size: clamp(36px, 6vw, 52px);
   }
 
-  .numbered-heading {
-    display: flex;
-    align-items: center;
-    position: relative;
-    margin: 0 0 16px;
+  /*
+   * The standard section header: a mono eyebrow label (like a statement
+   * column header — "ENTRY", "SECTION") over a display headline, closed off
+   * by a full-width rule. No decorative 01/02/03 — order isn't the point
+   * here, the rule is what marks a new part of the statement.
+   */
+  .ledger-heading {
+    margin: 0 0 40px;
     padding: 0;
-    width: 100%;
-    font-size: clamp(26px, 5vw, var(--fz-heading));
-    white-space: nowrap;
+
+    .eyebrow {
+      display: block;
+      margin: 0 0 10px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: var(--fz-xs);
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .headline {
+      margin: 0 0 16px;
+      font-size: clamp(28px, 4vw, var(--fz-heading));
+      font-weight: 500;
+    }
 
     &:after {
       content: '';
       display: block;
-      position: relative;
-      top: -5px;
-      width: 300px;
+      width: 100%;
       height: 1px;
-      margin-left: 20px;
       background-color: var(--border);
-
-      @media (max-width: 1080px) {
-        width: 200px;
-      }
-      @media (max-width: 768px) {
-        width: 100%;
-      }
-      @media (max-width: 600px) {
-        margin-left: 10px;
-      }
     }
   }
 
@@ -298,7 +299,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     color: var(--heading);
     font-size: clamp(24px, 4vw, 32px);
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.2;
   }
 
@@ -346,12 +347,7 @@ const GlobalStyle = createGlobalStyle`
 
     &:hover,
     &:focus {
-      color: var(--secondary);
-    }
-
-    [data-theme='light'] &:hover,
-    [data-theme='light'] &:focus {
-      color: #0a192f;
+      color: var(--heading);
     }
 
     &.inline-link {
@@ -371,10 +367,6 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 0;
     outline: 0;
 
-    [data-theme='light'] & {
-      border-color: #0a192f;
-    }
-
     &:focus {
       outline: 0;
     }
@@ -384,11 +376,6 @@ const GlobalStyle = createGlobalStyle`
       &::placeholder {
         opacity: 0.5;
       }
-    }
-
-    [data-theme='light'] &:hover,
-    [data-theme='light'] &:focus {
-      border-color: #0a192f;
     }
   }
 
@@ -424,24 +411,25 @@ const GlobalStyle = createGlobalStyle`
         padding-left: 30px;
         margin-bottom: 10px;
         &:before {
-          content: '▹';
+          content: '—';
           position: absolute;
           left: 0;
-          color: var(--secondary);
+          color: var(--text-muted);
         }
       }
     }
   }
 
   blockquote {
-    border-left-color: var(--secondary);
+    border-left-color: var(--stamp);
     border-left-style: solid;
-    border-left-width: 1px;
+    border-left-width: 2px;
     margin-left: 0px;
     margin-right: 0px;
     padding-left: 1.5rem;
 
     p {
+      font-family: var(--font-display);
       font-style: italic;
       font-size: 24px;
     }
@@ -463,22 +451,18 @@ const GlobalStyle = createGlobalStyle`
   }
 
   #logo {
-    color: var(--brand);
-
-    [data-theme='light'] & {
-      color: var(--secondary);
-    }
+    color: var(--heading);
   }
 
   .overline {
-    color: var(--secondary);
+    color: var(--text-muted);
     font-family: var(--font-mono);
     font-size: var(--fz-md);
     font-weight: 400;
   }
 
   .subtitle {
-    color: var(--secondary);
+    color: var(--text-muted);
     margin: 0 0 20px 0;
     font-size: var(--fz-md);
     font-family: var(--font-mono);
@@ -501,7 +485,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     align-items: center;
     margin-bottom: 50px;
-    color: var(--secondary);
+    color: var(--text-muted);
 
     .arrow {
       display: block;

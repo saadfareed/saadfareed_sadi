@@ -7,16 +7,16 @@ import {
   Section,
   CardsGrid,
   ProjectCard,
-  CardHeader,
+  CardMeta,
   StatusBadge,
   Year,
+  CardBody,
   CardTitle,
   CardTagline,
   CardDescription,
-  MetricsGrid,
+  MetricsRow,
   Metric,
-  TechList,
-  TechTag,
+  TechLine,
   CardFooter,
   CardActionExternal,
 } from '@components/ui';
@@ -68,9 +68,13 @@ const Projects = () => {
 
   return (
     <StyledProjectsSection id="open-source" ref={revealContainer}>
-      <h2 className="numbered-heading">Open Source</h2>
+      <div className="ledger-heading">
+        <span className="eyebrow">Public Record</span>
+        <h2 className="headline">Open Source</h2>
+      </div>
       <p className="section-intro">
-        Public repositories, CLI tools, and community projects — maintained for developers and shared on GitHub.
+        Public repositories, CLI tools, and community projects — maintained for developers and
+        shared on GitHub.
       </p>
 
       <CardsGrid>
@@ -83,45 +87,43 @@ const Projects = () => {
 
           return (
             <ProjectCard key={title} ref={el => (revealCards.current[i] = el)}>
-              <CardHeader>
+              <CardMeta>
                 <StatusBadge>
                   <span className="dot" aria-hidden="true" />
                   Open Source
                 </StatusBadge>
                 <Year>{year}</Year>
-              </CardHeader>
+              </CardMeta>
 
-              <CardTitle>{title}</CardTitle>
-              <CardTagline>{company || 'Community Project'}</CardTagline>
-              <CardDescription>{description}</CardDescription>
+              <CardBody>
+                <CardTitle>{title}</CardTitle>
+                <CardTagline>{company || 'Community Project'}</CardTagline>
+                <CardDescription>{description}</CardDescription>
 
-              <MetricsGrid>
-                {metrics.map(metric => (
-                  <Metric key={`${metric.label}-${metric.value}`}>
-                    <strong>{metric.value}</strong>
-                    <span>{metric.label}</span>
-                  </Metric>
-                ))}
-              </MetricsGrid>
+                <MetricsRow>
+                  {metrics.map(metric => (
+                    <Metric key={`${metric.label}-${metric.value}`}>
+                      <strong>{metric.value}</strong>
+                      <span>{metric.label}</span>
+                    </Metric>
+                  ))}
+                </MetricsRow>
 
-              <TechList>
-                {tech.map(item => (
-                  <TechTag key={item}>{item}</TechTag>
-                ))}
-              </TechList>
+                <TechLine>{tech.join(' · ')}</TechLine>
 
-              <CardFooter>
-                {github && (
-                  <CardActionExternal href={github} target="_blank" rel="noreferrer">
-                    GitHub ↗
-                  </CardActionExternal>
-                )}
-                {external && (
-                  <CardActionExternal href={external} target="_blank" rel="noreferrer">
-                    Live ↗
-                  </CardActionExternal>
-                )}
-              </CardFooter>
+                <CardFooter>
+                  {github && (
+                    <CardActionExternal href={github} target="_blank" rel="noreferrer">
+                      GitHub ↗
+                    </CardActionExternal>
+                  )}
+                  {external && (
+                    <CardActionExternal href={external} target="_blank" rel="noreferrer">
+                      Live ↗
+                    </CardActionExternal>
+                  )}
+                </CardFooter>
+              </CardBody>
             </ProjectCard>
           );
         })}
